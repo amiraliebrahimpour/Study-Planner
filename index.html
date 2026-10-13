@@ -381,6 +381,78 @@ header .hbanner{animation:headerBannerSettle .85s cubic-bezier(.2,.75,.25,1) bot
 header>.htxt{animation:headerTextEnter .48s ease-out .08s both}
 @media(prefers-reduced-motion:reduce){header,header .hbanner,header>.htxt{animation:none!important}}
 
+
+/* Unified visual system: all day panels and cards share the header palette */
+.days .day:nth-child(n), .stats .st:nth-child(n), .card,
+.two .card:nth-child(n), .four .card:nth-child(n), #aiCard, #fbCard {
+  --d1: var(--b);
+  --d2: var(--p);
+}
+body .day, body .card {
+  background: linear-gradient(180deg,#fff,color-mix(in srgb,var(--b) 4%,#fff)) padding-box,
+              linear-gradient(125deg,var(--b),var(--p),var(--pk,var(--p))) border-box !important;
+  border: 2px solid transparent !important;
+  box-shadow: 0 14px 30px -22px color-mix(in srgb,var(--b) 55%,var(--p)) !important;
+}
+.day::before, .card::after { background: linear-gradient(90deg,var(--b),var(--p),var(--pk,var(--p))) !important; }
+.day .dh { background: linear-gradient(100deg,color-mix(in srgb,var(--b) 15%,#fff),color-mix(in srgb,var(--p) 12%,#fff)) !important; }
+.day th { background: linear-gradient(90deg,var(--b),var(--p)) !important; }
+.day td { border-color: color-mix(in srgb,var(--b) 18%,#fff) !important; }
+.day td.c { color: var(--b) !important; }
+.day .tot { background: linear-gradient(100deg,color-mix(in srgb,var(--b) 9%,#fff),color-mix(in srgb,var(--p) 8%,#fff)) !important; }
+body .card h3 { background: linear-gradient(90deg,color-mix(in srgb,var(--b) 12%,#fff),color-mix(in srgb,var(--p) 10%,#fff) 70%,transparent) !important; border-right-color: var(--b) !important; }
+.stats .st { background: linear-gradient(160deg,#fff,color-mix(in srgb,var(--b) 5%,#fff)) padding-box,linear-gradient(135deg,var(--b),var(--p),var(--pk,var(--p))) border-box !important; }
+.stats .st b { background: linear-gradient(120deg,var(--b),var(--p)); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
+
+
+/* ===== Performance pass: fast, lightweight header entrance ===== */
+@media screen {
+  :root { --intro: 0s; }
+  /* Do not animate the whole page or delay the toolbar/content. */
+  body::after { animation: none !important; }
+  body .bar { animation: none !important; }
+  body header {
+    animation: headerQuickIn .32s cubic-bezier(.2,.75,.25,1) both !important;
+    animation-delay: 0s !important;
+    will-change: opacity, transform;
+  }
+  body header .hbanner {
+    animation: bannerQuickIn .38s ease-out both !important;
+    animation-delay: 0s !important;
+  }
+  body header>.htxt h1 {
+    animation: textQuickIn .28s ease-out both !important;
+    animation-delay: .06s !important;
+  }
+  body header .htxt .mot {
+    animation: textQuickIn .28s ease-out both, none !important;
+    animation-delay: .1s, 0s !important;
+    background-size: 100% 100% !important;
+  }
+  body header .cr2 { animation: none !important; }
+  header::after { display: none !important; animation: none !important; }
+  @keyframes headerQuickIn {
+    from { opacity: .75; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bannerQuickIn {
+    from { opacity: .8; }
+    to { opacity: 1; }
+  }
+  @keyframes textQuickIn {
+    from { opacity: .7; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  body header, body header .hbanner, body header .htxt h1, body header .htxt .mot { animation: none !important; }
+}
+
+
+/* نام درس کنار رنگ‌انتخاب در تنظیمات: مشکی */
+.sc,#subcol label{color:#000!important}
+/* اعداد آمار هفته: پررنگ و یکدست */
+.stats .st b,.st b{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:var(--n)!important;-webkit-text-fill-color:var(--n)!important;font-weight:800!important}
 </style></head>
 <body>
 <div class="wrap">
@@ -580,7 +652,7 @@ function analyze(){
 function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
 function update(){
  const w=W(),c=weekCalc(w);
- c.t.forEach((x,i)=>{$('ds'+i).textContent=fmt(x.m);$('dt'+i).textContent=fa(x.T??x.t)});
+ c.t.forEach((x,i)=>{$('ds'+i).textContent=x.m?fmt(x.m):'';const tv=x.T??x.t;$('dt'+i).textContent=tv?fa(tv):''});
  const empty=c.M===0&&c.T===0;
  $('stats').innerHTML=[['مجموع ساعت مطالعه در هفته',fmt(c.M)],['مجموع تعداد تست در هفته',fa(c.T)+' تست'],['میانگین مطالعه روزانه',fmt(c.avgM)],['میانگین تست روزانه',fa(c.avgT)],
  ['بیشترین مطالعه در یک روز',fmt(c.mm)],['بیشترین تست در یک روز',fa(c.mt)],['پرمطالعه‌ترین روز',c.dm],['پرتست‌ترین روز',c.dt]].map(x=>`<div class="st"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')+(empty?'<div class="st" style="grid-column:1/-1"><span>هنوز اطلاعاتی ثبت نشده</span></div>':'');
@@ -680,7 +752,14 @@ function applyTheme(){const A=allTH(),k=A[S.settings.theme]?S.settings.theme:'ge
  [['--n',t.n],['--b',t.b],['--p',t.p],['--l',t.l],['--bd',t.d],['--hm',t.m]].forEach(x=>R.setProperty(x[0],x[1]));
  R.setProperty('--tile',bio(...t.c));R.setProperty('--ico',JSON.stringify(t.i+' '));
  if(window.setScene&&window.THEMEK!==k){window.THEMEK=k;setScene(TH[k]?k:'gen')}}
-load();build();
+load();
+// Return Saturday numeric fields to their default empty state in every saved week.
+Object.values(S.weeks).forEach(w=>{
+  const sat=w && Array.isArray(w.days) ? w.days[0] : null;
+  if(sat && Array.isArray(sat.rows)) sat.rows.forEach(r=>{ if(r){r.h='';r.m='';r.t='';} });
+});
+save();
+build();
 
 (function(){try{
 if(!window.THREE)return;
