@@ -409,24 +409,24 @@ const FBO=['راضی‌ام','متوسط','ناراضی‌ام'];
 let FBuid=null,FBmine=null,FBcnt=[0,0,0],FBst='load',FBdb=null,FBdev='';
 const FBK=()=>(typeof KEY!=='undefined'?KEY:'planner')+'_fbdev';
 function fbDevice(){try{let d=localStorage.getItem(FBK());if(!d){d=Date.now().toString(36)+Math.random().toString(36).slice(2,10);localStorage.setItem(FBK(),d)}return d}catch(x){return ''}}
+function fbLocal(){FBst='local';let v=null;try{v=localStorage.getItem(FBK()+'_v')}catch(x){}FBmine=(v===null||v==='')?null:+v;FBcnt=[0,0,0];if(FBmine!==null)FBcnt[FBmine]=1;fbRender()}
 function fbRender(){
  const tot=FBcnt.reduce((x,y)=>x+y,0);
- if(FBst==='none'){$('fbo').innerHTML='';$('fbr').innerHTML='<div class="fbn">رأی‌گیری فقط در نسخه‌ی منتشرشده فعال است.</div>';return}
- $('fbo').innerHTML=FBO.map((o,i)=>`<button data-i="${i}" class="${FBmine===i?'on':''}" ${FBst==='ok'||FBst==='deny'?'':'disabled'}>${o}</button>`).join('');
+ $('fbo').innerHTML=FBO.map((o,i)=>`<button data-i="${i}" class="${FBmine===i?'on':''}" ${FBst==='ok'||FBst==='deny'||FBst==='local'?'':'disabled'}>${o}</button>`).join('');
  const bars=tot?FBO.map((o,i)=>{const p=Math.round(FBcnt[i]/tot*100);return `<div class="fbp"><span class="fbl">${o}</span><div class="fbbar"><i style="width:${p}%"></i></div><b>${fa(p)}٪ (${fa(FBcnt[i])})</b></div>`}).join(''):'<div class="fbn">هنوز رأیی ثبت نشده است.</div>';
  $('fbr').innerHTML=bars+`<div class="fbn">تعداد کل رأی‌ها: ${fa(tot)}</div>`+(FBst==='deny'?'<div class="fbn">امکان ثبت رأی برای شما فعال نیست.</div>':'')}
-$('fbo').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b||b.disabled||!FBdb||!FBuid)return;const i=+b.dataset.i;if(i===FBmine)return;
+$('fbo').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b||b.disabled)return;const i=+b.dataset.i;if(i===FBmine)return;if(FBst==='local'){try{localStorage.setItem(FBK()+'_v',String(i))}catch(x){}fbDevice();fbLocal();return}if(!FBdb||!FBuid)return;
  try{await FBdb.doc('votes/'+FBuid).set({c:i,d:FBdev,t:Date.now()});if(FBst==='deny'){FBst='ok'}}catch(x){FBst='deny';fbRender()}});
 (async()=>{try{
- const cl=window.claude;if(!cl){FBst='none';fbRender();return}
+ const cl=window.claude;if(!cl){fbLocal();return}
  const [db,user]=await Promise.all([cl.use('db'),cl.use('user')]);
- if(!db||!user){FBst='none';fbRender();return}
- FBuid=await user.id();if(!FBuid){FBst='none';fbRender();return}
+ if(!db||!user){fbLocal();return}
+ FBuid=await user.id();if(!FBuid){fbLocal();return}
  FBdb=db;FBdev=fbDevice();FBst='ok';
  db.collection('votes').onSnapshot(sn=>{const best={};FBmine=null;
   sn.docs.forEach(d=>{const x=d.data()||{},v=x.c;if(!(v===0||v===1||v===2))return;const k=x.d||('u:'+d.id),t=+x.t||0;if(!best[k]||t>=best[k].t)best[k]={v,t};if(d.id===FBuid)FBmine=v});
   const c=[0,0,0];Object.values(best).forEach(o=>c[o.v]++);FBcnt=c;fbRender()},()=>{FBst='err';fbRender()});
-}catch(x){FBst='none';fbRender()}})();
+}catch(x){fbLocal()}})();
 function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
 function update(){
  const w=W(),c=weekCalc(w);
