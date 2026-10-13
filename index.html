@@ -204,6 +204,16 @@ header .cr2{font-size:9px!important}header .cr2 a{font-size:8.5px!important}
 .ai-i{display:flex;gap:8px;align-items:flex-start;border-radius:10px;padding:7px 10px;margin:5px 0;font-size:13px;line-height:1.9;border:1px solid var(--bd);background:#fff}
 .ai-i.ok{background:#eefaf1;border-color:#b9e3c4}.ai-i.warn{background:#fff6e8;border-color:#f3d39b}.ai-i.tip{background:#eef4ff;border-color:#bcd0f5}
 .ai-i span:first-child{font-size:16px;line-height:1.7}.ainote{display:block;margin-top:6px;font-size:11px;color:#555}
+
+.fbq{font-size:13px;margin-bottom:6px;color:var(--n)}.fbo{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.fbo button{flex:1 1 120px;background:#fff;color:var(--n);border:2px solid var(--bd);border-radius:12px;padding:8px 6px;font-size:13px;font-family:inherit;cursor:pointer}
+.fbo button.on{background:var(--b);color:#fff;border-color:var(--b);font-weight:700}
+#fbt{width:100%;box-sizing:border-box;border:1px solid var(--bd);border-radius:10px;padding:8px;font-family:inherit;font-size:13px;resize:vertical}
+.fbb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}.fbb button{padding:8px 14px;font-size:13px}#fbm{font-size:12px;color:var(--n)}
+
+.fbp{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12px}.fbl{flex:0 0 105px;color:var(--n)}
+.fbbar{flex:1;height:12px;background:var(--l);border-radius:8px;overflow:hidden;border:1px solid var(--bd)}.fbbar i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--p))}
+.fbp b{flex:0 0 44px;text-align:left;color:var(--n)}.fbn{font-size:11px;color:#555;margin-top:4px}
 </style></head>
 <body>
 <div class="wrap">
@@ -244,6 +254,11 @@ header .cr2{font-size:9px!important}header .cr2 a{font-size:8.5px!important}
 <div class="card"><h3>جمع تست در ماه</h3><div id="c4"></div></div>
 </div>
 <div class="card" id="aiCard"><h3>🤖 تحلیل هوشمند روند فعالیت</h3><div id="ai"></div><small class="ainote">این تحلیل از روی ساعت‌ها و تست‌هایی که ثبت کرده‌ای ساخته می‌شود و روی همین دستگاه انجام می‌شود. هرچه هفته‌های بیشتری ثبت کنی، دقیق‌تر می‌شود.</small></div>
+<div class="card noprint" id="fbCard"><h3>نظر شما درباره‌ی این برنامه</h3>
+<div class="fbq">میزان رضایت شما از این برنامه چقدر است؟</div>
+<div class="fbo" id="fbo"></div>
+<div id="fbr"></div>
+<small class="ainote">درصدها از رأی‌های ثبت‌شده روی همین دستگاه محاسبه می‌شود. با انتخاب مجدد، رأی شما تغییر می‌کند.</small></div>
 </div>
 <datalist id="dl"></datalist>
 
@@ -269,10 +284,10 @@ const addD=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);
 const jal=iso=>{const[y,m,d]=iso.split('-').map(Number);const j=g2j(y,m,d);return fa(j[0])+'/'+fa(String(j[1]).padStart(2,'0'))+'/'+fa(String(j[2]).padStart(2,'0'))};
 const lastSat=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return d.toISOString().slice(0,10)};
 
-const KEY='genetics-planner-v1';
+const KEY='genetics-planner-v2';
 const defS={title:'برنامه هفتگی مطالعه',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8};
 const lst=(n,names)=>Array.from({length:n},(_,i)=>({t:names?names[i]||'':'',d:false}));
-const mk=start=>({start,days:D.map(()=>({date:'',rows:Array.from({length:6},()=>({s:'',h:'',m:'',t:'',n:''}))})),goals:lst(4),tasks:lst(5),rev:lst(5,['هماتولوژی','ایمونولوژی','بیوشیمی','زیست','زبان']),subj:lst(5)});
+const mk=start=>({start,days:D.map(()=>({date:'',rows:Array.from({length:6},()=>({s:'',h:'',m:'',t:'',n:''}))})),goals:lst(4),tasks:lst(5),rev:lst(5),subj:lst(5)});
 let S={settings:{...defS},weeks:{},cur:''},blank=false;
 function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&x.weeks){S=x;S.settings={...defS,...x.settings}}}catch(e){err('خطا در بازیابی: '+e.message)}
  if(['برنامه هفتگی ژنتیک','برنامه هفتگی','برنامه هفتگی ارشد','برنامه هفتگی ارشد/دکترا','برنامه هفتگی ارشد/دکتری'].includes(S.settings.title)||/^\s*برنامه\s*هفتگی\s*(یک|[0-9۰-۹]+)\s*$/.test(S.settings.title||''))S.settings.title=defS.title;if(S.settings.color==='#2f80ed')S.settings.color=defS.color;
@@ -298,7 +313,7 @@ function build(){
  <input type="text" data-p="days.${i}.date" value="${blank?'':esc(d.date||jal(addD(w.start,i)))}"></div>
  <table><tr><th>#</th><th>درس</th><th>ساعت مطالعه</th><th>تست</th></tr>
  ${d.rows.map((r,j)=>`<tr><td class="c">${fa(j+1)}</td><td><div style="display:flex;align-items:center"><input class="val" list="dl" data-p="days.${i}.rows.${j}.s" value="${val(r.s)}"><select class="pk noprint" data-pick="days.${i}.rows.${j}.s"><option value="">▾</option>${S.settings.subs.split(/[,،]/).map(x=>`<option>${esc(x.trim())}</option>`).join('')}</select></div><input class="nt val" placeholder="توضیح" data-p="days.${i}.rows.${j}.n" value="${val(r.n)}"></td>
- <td><input class="val tm" placeholder="۱:۳۰" data-p="days.${i}.rows.${j}.h" value="${val(r.h)}"></td>
+ <td><input class="val tm" placeholder="۰:۰۰" data-p="days.${i}.rows.${j}.h" value="${val(r.h)}"></td>
  <td class="t"><input class="val" type="number" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.t" value="${val(r.t)}"></td></tr>`).join('')}</table>
  <div class="tot"><span>جمع ساعت مطالعه</span><span id="ds${i}"></span></div><div class="tot"><span>جمع تعداد تست</span><span id="dt${i}"></span></div></div>`).join('');
  const panel=(title,key,ph,edit)=>`<div class="card"><h3>${title}</h3>${w[key].map((g,i)=>`<div class="li"><span>${fa(i+1)}</span><input type="checkbox" data-p="${key}.${i}.d" ${g.d&&!blank?'checked':''}><input type="text" class="val" placeholder="${ph}" data-p="${key}.${i}.t" value="${val(g.t)}"></div>`).join('')}<div class="gp" id="gp_${key}" style="font-size:12px;font-weight:600;margin-top:6px"></div></div>`;
@@ -390,6 +405,13 @@ function analyze(){
    else it.push(['tip','🧪','نسبت تست به ساعت مطالعه: حدود '+fa(Math.round(r*10)/10)+' تست در هر ساعت.'])}}
  const h=good>bad+1?'جمع‌بندی: روندت خوب و رو به جلوست 👏':bad>good+1?'جمع‌بندی: نیاز به کمی تنظیم و جبران داری 🔧':'جمع‌بندی: وضعیتت متعادل است، با چند اصلاح کوچک بهتر هم می‌شود 🙂';
  return{h,items:it}}
+const FBO=['خیلی راضی‌ام','راضی‌ام','متوسط','ناراضی‌ام','خیلی ناراضی‌ام'];
+function fbRender(){const f=S.settings.fb=S.settings.fb||{};f.v=Array.isArray(f.v)&&f.v.length===5?f.v:[0,0,0,0,0];
+ const tot=f.v.reduce((x,y)=>x+y,0);
+ $('fbo').innerHTML=FBO.map((o,i)=>`<button data-i="${i}" class="${f.r===i?'on':''}">${o}</button>`).join('');
+ $('fbr').innerHTML=tot?FBO.map((o,i)=>{const p=Math.round(f.v[i]/tot*100);return `<div class="fbp"><span class="fbl">${o}</span><div class="fbbar"><i style="width:${p}%"></i></div><b>${fa(p)}٪</b></div>`}).join('')+`<div class="fbn">تعداد کل رأی‌ها: ${fa(tot)}</div>`:'<div class="fbn">هنوز رأیی ثبت نشده است.</div>'}
+$('fbo').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const f=S.settings.fb=S.settings.fb||{};f.v=Array.isArray(f.v)&&f.v.length===5?f.v:[0,0,0,0,0];
+ if(f.r!==undefined&&f.v[f.r]>0)f.v[f.r]--;f.r=+b.dataset.i;f.v[f.r]++;save();fbRender()});
 function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
 function update(){
  const w=W(),c=weekCalc(w);
@@ -485,7 +507,7 @@ function applyTheme(){const A=allTH(),k=A[S.settings.theme]?S.settings.theme:'ge
  [['--n',t.n],['--b',t.b],['--p',t.p],['--l',t.l],['--bd',t.d],['--hm',t.m]].forEach(x=>R.setProperty(x[0],x[1]));
  R.setProperty('--tile',bio(...t.c));R.setProperty('--ico',JSON.stringify(t.i+' '));
  if(window.setScene&&window.THEMEK!==k){window.THEMEK=k;setScene(TH[k]?k:'gen')}}
-load();build();
+load();build();fbRender();
 
 (function(){try{
 if(!window.THREE)return;
