@@ -434,7 +434,7 @@ $('fbo').addEventListener('click',async e=>{const b=e.target.closest('button');i
  FBuid=await user.id();if(!FBuid){fbLocal();return}
  FBdb=db;FBdev=fbDevice();FBst='ok';
  db.collection('votes').onSnapshot(sn=>{const best={};FBmine=null;
-  sn.docs.forEach(d=>{const x=d.data()||{},v=x.c;if(!(v===0||v===1||v===2))return;const k=x.d||('u:'+d.id),t=+x.t||0;if(!best[k]||t>=best[k].t)best[k]={v,t};if(d.id===FBuid)FBmine=v});
+  sn.docs.forEach(d=>{const x=d.data()||{},v=x.c;if(!(v===0||v===1||v===2))return;const k=d.id,t=+x.t||0;if(!best[k]||t>=best[k].t)best[k]={v,t};if(d.id===FBuid)FBmine=v});
   const c=[0,0,0];Object.values(best).forEach(o=>c[o.v]++);FBcnt=c;fbRender()},()=>{FBst='err';fbRender()});
 }catch(x){fbLocal()}})();
 function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
