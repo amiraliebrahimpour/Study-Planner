@@ -557,6 +557,15 @@ button:disabled{opacity:.45;cursor:default}
 /* wider subject column */
 @media screen{.days .day th:nth-child(3){width:16%}.days .day th:nth-child(4){width:11%}.days .day th:nth-child(5){width:11%}.days .day th:nth-child(6){width:8%}.days .day th:nth-child(7){width:10%}}
 @media screen{.day,.card{contain:layout}}
+
+/* wider Sat–Tue cards: more room for subject / test / correct columns */
+@media screen and (min-width:1001px){.days .day:nth-child(-n+4){grid-column:span 6}}
+@media screen and (min-width:801px){
+.days .day:nth-child(-n+4) th:nth-child(3){width:14%}
+.days .day:nth-child(-n+4) th:nth-child(4),.days .day:nth-child(-n+4) th:nth-child(5){width:14%}
+.days .day:nth-child(-n+4) th:nth-child(6){width:9%}
+.days .day:nth-child(-n+4) th:nth-child(7){width:10%}
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -952,7 +961,12 @@ let hadLS=false;try{hadLS=!!localStorage.getItem(KEY)}catch(e){}
  document.addEventListener('visibilitychange',function(){if(document.hidden)window.__bkNow()});
 })();
 load();
-try{if(!localStorage.getItem('planner-sat0-v1')){if(hadLS){const sd=W()&&W().days&&W().days[0];if(sd&&Array.isArray(sd.rows)){sd.rows.forEach(r=>{r.h='0';r.t='0';r.c='0';r.m=''});if(sd.c!==undefined&&sd.c!=='')sd.c='0'}}localStorage.setItem('planner-sat0-v1','1')}}catch(e){}
+try{if(!localStorage.getItem('planner-sat-empty-v1')){
+ const zero=v=>v===0||/^[0۰:.\s]*$/.test(String(v==null?'':v));
+ Object.keys(S.weeks).forEach(k=>{const w=S.weeks[k],d=w&&w.days&&w.days[0];if(!d||!Array.isArray(d.rows))return;const cur=k===S.cur;
+  d.rows.forEach(r=>['h','m','t','c'].forEach(f=>{if(cur||zero(r[f]))r[f]=''}));
+  if(d.c!==undefined&&(cur||zero(d.c)))d.c=''});
+ localStorage.setItem('planner-sat-empty-v1','1')}}catch(e){}
 save();
 build();
 if(!hadLS&&window.__bkRestore)window.__bkRestore(function(v){if(!v)return;try{const x=clean(JSON.parse(v,SAFE));if(x){S=x;S.settings={...defS,...x.settings};save();build()}}catch(e){}});
