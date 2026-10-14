@@ -584,10 +584,10 @@ button:disabled{opacity:.45;cursor:default}
 <div class="card"><h3>تنظیمات</h3>
 <div class="li">عنوان <input type="text" data-s="title"> شعار <input type="text" data-s="slogan"></div>
 <div class="li">هدف <input type="text" data-s="goal"> </div>
-<div class="li" style="flex-wrap:wrap"><b>شمارش معکوس آزمون:</b> نام <input type="text" data-x="n" maxlength="40" placeholder="مثلاً کنکور" style="max-width:130px"> تاریخ آزمون <input type="date" data-x="d"> هدف کل تست <input type="number" data-x="t" min="0" max="100000" inputmode="numeric" placeholder="مثلاً ۵۰۰۰" style="width:90px"> شمارش از <input type="date" data-x="s"></div>
+<div class="li" style="flex-wrap:wrap"><b>شمارش معکوس آزمون:</b> نام <input type="text" data-x="n" maxlength="40" placeholder="مثلاً کنکور" style="max-width:130px"> تاریخ آزمون <input type="date" data-x="d"> هدف کل تست <input type="text" data-num="1" data-x="t" min="0" max="100000" inputmode="numeric" placeholder="مثلاً ۵۰۰۰" style="width:90px"> شمارش از <input type="date" data-x="s"></div>
 <div class="li">درس‌ها (با ویرگول جدا کنید) <input type="text" data-s="subs"></div>
 <div class="li" style="display:block"><b>رنگ هر درس در نمودارها</b> <button type="button" id="colReset" class="scr">بازگشت به رنگ‌های پیش‌فرض</button><div id="subcol"></div></div>
-<div class="li"><label><input type="checkbox" data-sc="dna"> نمایش تزئینات</label> <label><input type="checkbox" data-sc="hdr"> نمایش هدر در چاپ</label> حاشیه چاپ (میلی‌متر) <input type="number" data-s="pm" min="0" max="30" style="width:60px"></div>
+<div class="li"><label><input type="checkbox" data-sc="dna"> نمایش تزئینات</label> <label><input type="checkbox" data-sc="hdr"> نمایش هدر در چاپ</label> حاشیه چاپ (میلی‌متر) <input type="text" data-num="1" data-s="pm" inputmode="numeric" min="0" max="30" style="width:60px"></div>
 </div>
 
 </div>
@@ -595,7 +595,7 @@ button:disabled{opacity:.45;cursor:default}
 <div class="card"><h3>آمار هفته</h3><div class="stats" id="stats"></div></div>
 <div class="two">
 <div class="card" id="goalCard"><h3>هدف هفتگی و پیشرفت</h3><div id="strk"></div>
-<div class="gl noprint"><label>هدف ساعت مطالعه در هفته<input type="number" min="0" step="1" inputmode="numeric" id="gH" data-g="gh" placeholder="مثلاً ۲۰"></label><label>هدف تعداد تست در هفته<input type="number" min="0" step="1" inputmode="numeric" id="gT" data-g="gt" placeholder="مثلاً ۳۰۰"></label></div>
+<div class="gl noprint"><label>هدف ساعت مطالعه در هفته<input type="text" data-num="1" min="0" step="1" inputmode="numeric" id="gH" data-g="gh" placeholder="مثلاً ۲۰"></label><label>هدف تعداد تست در هفته<input type="text" data-num="1" min="0" step="1" inputmode="numeric" id="gT" data-g="gt" placeholder="مثلاً ۳۰۰"></label></div>
 <div id="goalOut"></div></div>
 <div class="card" id="accCard"><h3>دقت و درصد تست‌ها</h3>
 <label class="tog noprint"><input type="checkbox" id="gN" data-g="neg"> نمره‌ی منفی (هر ۳ غلط، یک درست را کم می‌کند)</label>
@@ -682,8 +682,8 @@ function build(){
  <table><tr><th>#</th><th>درس</th><th>ساعت مطالعه</th><th>تست</th><th>درست</th><th>غلط</th><th>درصد</th></tr>
  ${d.rows.map((r,j)=>`<tr><td class="c">${fa(j+1)}</td><td><div style="display:flex;align-items:center"><input class="val" list="dl" data-p="days.${i}.rows.${j}.s" value="${val(r.s)}"><select class="pk noprint" data-pick="days.${i}.rows.${j}.s"><option value="">▾</option>${S.settings.subs.split(/[,،]/).map(x=>`<option>${esc(x.trim())}</option>`).join('')}</select></div><input class="nt val" placeholder="توضیح" data-p="days.${i}.rows.${j}.n" value="${val(r.n)}"></td>
  <td><input class="val tm" placeholder="۰:۰۰" data-p="days.${i}.rows.${j}.h" value="${val(r.h)}"></td>
- <td class="t"><input class="val" type="number" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.t" value="${val(r.t)}"></td>
- <td class="t cin"><input class="val" type="number" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.c" value="${val(r.c)}"></td><td class="rc"><span id="rw${i}_${j}"></span></td><td class="rc"><span id="rp${i}_${j}"></span></td></tr>`).join('')}</table>
+ <td class="t"><input class="val" type="text" data-num="1" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.t" value="${val(r.t)}"></td>
+ <td class="t cin"><input class="val" type="text" data-num="1" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.c" value="${val(r.c)}"></td><td class="rc"><span id="rw${i}_${j}"></span></td><td class="rc"><span id="rp${i}_${j}"></span></td></tr>`).join('')}</table>
  <div class="tot"><span>جمع ساعت مطالعه</span><span id="ds${i}"></span></div><div class="tot"><span>جمع تعداد تست</span><span id="dt${i}"></span></div><div class="tot"><span>جمع تست غلط</span><span id="dw${i}"></span></div><div class="tot"><span>درصد تست‌های روز</span><span id="dp${i}"></span></div></div>`).join('');
  const panel=(title,key,ph,edit)=>`<div class="card"><h3>${title}</h3>${w[key].map((g,i)=>`<div class="li"><span>${fa(i+1)}</span><input type="checkbox" data-p="${key}.${i}.d" ${g.d&&!blank?'checked':''}><input type="text" class="val" placeholder="${ph}" data-p="${key}.${i}.t" value="${val(g.t)}"></div>`).join('')}<div class="gp" id="gp_${key}" style="font-size:12px;font-weight:600;margin-top:6px"></div></div>`;
  $('panels').innerHTML=panel('اهداف هفته','goals','هدف',1)+panel('کارهای روزمره','tasks','کار',1)+panel('مرورهای هفته','rev','درس',1)+panel('روتین‌های روزانه','subj','روتین',1);
@@ -800,7 +800,7 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.type==='number'&&v!==''&&(isNaN(+v)||+v<0)){t.value='';v=''}
   if(t.type==='number'&&v!=='')v=String(Math.floor(+v));
   setp(t.dataset.p,v);if(t.classList.contains('tm'))t.style.background=(v!==''&&!pt(v)&&!/^[0۰:.]+$/.test(v))?'#ffe3e3':'';saveSoon();updSoon()}
- else if(t.dataset.s){S.settings[t.dataset.s]=t.type==='number'?num(t.value):t.value;saveSoon();bldSoon()}
+ else if(t.dataset.s){S.settings[t.dataset.s]=(t.type==='number'||t.dataset.num)?num(t.value):t.value;saveSoon();bldSoon()}
  else if(t.dataset.sc){S.settings[t.dataset.sc]=t.checked;save();build()}});
 document.addEventListener('change',e=>{if(e.target.classList&&e.target.classList.contains('val'))renderSubCols()});
 $('colReset').onclick=()=>{S.settings.cols={};save();renderSubCols();update()};
@@ -979,6 +979,11 @@ const tick=()=>{if(!rm){if(window.AX==='x')g.rotation.x+=.012;g.children.forEach
 }catch(e){document.body.classList.remove('has3d')}})();
 </script><script>
 
+
+/* ===== digits: accept Persian/Arabic digits from the keyboard number row ===== */
+document.addEventListener('input',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.num)return;
+ const n=String(t.value).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/\D/g,'');
+ if(n!==t.value)t.value=n},true);
 /* ===== performance: batch heavy work while typing ===== */
 let _sv=0,_up=0,_bl=0,_ex=0;
 function saveSoon(){clearTimeout(_sv);_sv=setTimeout(()=>{_sv=0;save()},400)}
