@@ -553,6 +553,10 @@ button:disabled{opacity:.45;cursor:default}
 #cmpCard .cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
 .cmpt{font-size:13px;font-weight:700;text-align:center}
 .cmpd{text-align:center;font-size:11px;font-weight:600;margin-top:2px;min-height:16px}
+
+/* wider subject column */
+@media screen{.days .day th:nth-child(3){width:16%}.days .day th:nth-child(4){width:11%}.days .day th:nth-child(5){width:11%}.days .day th:nth-child(6){width:8%}.days .day th:nth-child(7){width:10%}}
+@media screen{.day,.card{contain:layout}}
 </style></head>
 <body>
 <div class="wrap">
@@ -598,6 +602,7 @@ button:disabled{opacity:.45;cursor:default}
 <div class="gl noprint"><label>هدف ساعت مطالعه در هفته<input type="text" data-num="1" min="0" step="1" inputmode="numeric" id="gH" data-g="gh" placeholder="مثلاً ۲۰"></label><label>هدف تعداد تست در هفته<input type="text" data-num="1" min="0" step="1" inputmode="numeric" id="gT" data-g="gt" placeholder="مثلاً ۳۰۰"></label></div>
 <div id="goalOut"></div></div>
 <div class="card" id="accCard"><h3>دقت و درصد تست‌ها</h3>
+<label class="tog noprint"><input type="checkbox" id="gS" data-g="skip"> تست‌هایی که «درست» نیستند، «نزده» حساب شوند (بدون نمره‌ی منفی)</label>
 <label class="tog noprint"><input type="checkbox" id="gN" data-g="neg"> نمره‌ی منفی (هر ۳ غلط، یک درست را کم می‌کند)</label>
 <div id="accOut"></div></div>
 </div>
@@ -647,7 +652,9 @@ const lastSat=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));
 const KEY='genetics-planner-v2';
 const defS={title:'برنامه هفتگی مطالعه',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8,cols:{}};
 const lst=(n,names)=>Array.from({length:n},(_,i)=>({t:names?names[i]||'':'',d:false}));
-const mk=start=>({start,days:D.map(()=>({date:'',rows:Array.from({length:6},()=>({s:'',h:'',m:'',t:'',n:''}))})),goals:lst(4),tasks:lst(5),rev:lst(5),subj:lst(5)});
+const ROWS=9;
+function padRows(){try{Object.values(S.weeks).forEach(w=>w&&Array.isArray(w.days)&&w.days.forEach(d=>{if(!d||!Array.isArray(d.rows))return;while(d.rows.length<ROWS)d.rows.push({s:'',h:'',m:'',t:'',n:''})}))}catch(e){}}
+const mk=start=>({start,days:D.map(()=>({date:'',rows:Array.from({length:ROWS},()=>({s:'',h:'',m:'',t:'',n:''}))})),goals:lst(4),tasks:lst(5),rev:lst(5),subj:lst(5)});
 let S={settings:{...defS},weeks:{},cur:''},blank=false;
 const SAFE=(k,v)=>(k==='__proto__'||k==='constructor'||k==='prototype')?undefined:v;
 const HEX=/^#[0-9a-f]{6}$/i,WKR=/^\d{4}-\d{2}-\d{2}$/;
@@ -661,7 +668,7 @@ function load(){try{const x=clean(JSON.parse(localStorage.getItem(KEY)||'null',S
  if(['برنامه هفتگی ژنتیک','برنامه هفتگی','برنامه هفتگی ارشد','برنامه هفتگی ارشد/دکترا','برنامه هفتگی ارشد/دکتری'].includes(S.settings.title)||/^\s*برنامه\s*هفتگی\s*(یک|[0-9۰-۹]+)\s*$/.test(S.settings.title||''))S.settings.title=defS.title;if(S.settings.color==='#2f80ed')S.settings.color=defS.color;
  if(S.settings.subs==='ژنتیک,بیوشیمی,زیست,زبان,هماتولوژی,ایمونولوژی')S.settings.subs=defS.subs;
  Object.values(S.weeks).forEach(w=>w.days&&w.days.forEach(d=>d.rows&&d.rows.forEach(r=>{if(r.m!==''&&r.m!=null){r.h=(r.h||0)+':'+r.m;r.m=''}})));
- if(!Object.keys(S.weeks).length){const s=lastSat();S.weeks[s]=mk(s);S.cur=s}if(!S.weeks[S.cur])S.cur=Object.keys(S.weeks).sort().pop()}
+ if(!Object.keys(S.weeks).length){const s=lastSat();S.weeks[s]=mk(s);S.cur=s}if(!S.weeks[S.cur])S.cur=Object.keys(S.weeks).sort().pop();padRows()}
 function save(){const j=JSON.stringify(S);try{localStorage.setItem(KEY,j);err('')}catch(e){err('خطا در ذخیره‌سازی: '+e.message)}if(window.__bk)window.__bk(j)}
 function err(t){$('msg').textContent=t}
 const $=id=>document.getElementById(id);
@@ -677,14 +684,15 @@ function build(){
  renderSubCols();$('dl').innerHTML=st.subs.split(/[,،]/).map(s=>`<option value="${esc(s.trim())}">`).join('');
  $('wk').innerHTML=Object.keys(S.weeks).sort().reverse().map(k=>`<option value="${k}" ${k===S.cur?'selected':''}>هفته ${jal(k)}</option>`).join('');
  $('st').value=w.start;
+ const subOpts=st.subs.split(/[,،]/).map(x=>`<option>${esc(x.trim())}</option>`).join('');
  $('days').innerHTML=w.days.map((d,i)=>`<div class="day"><div class="dh"><span>${D[i]}</span><span>📅</span>
  <input type="text" data-p="days.${i}.date" value="${blank?'':esc(d.date||jal(addD(w.start,i)))}"></div>
- <table><tr><th>#</th><th>درس</th><th>ساعت مطالعه</th><th>تست</th><th>درست</th><th>غلط</th><th>درصد</th></tr>
- ${d.rows.map((r,j)=>`<tr><td class="c">${fa(j+1)}</td><td><div style="display:flex;align-items:center"><input class="val" list="dl" data-p="days.${i}.rows.${j}.s" value="${val(r.s)}"><select class="pk noprint" data-pick="days.${i}.rows.${j}.s"><option value="">▾</option>${S.settings.subs.split(/[,،]/).map(x=>`<option>${esc(x.trim())}</option>`).join('')}</select></div><input class="nt val" placeholder="توضیح" data-p="days.${i}.rows.${j}.n" value="${val(r.n)}"></td>
+ <table><tr><th>#</th><th>درس</th><th>ساعت مطالعه</th><th>تست</th><th>درست</th><th>${WL()}</th><th>درصد</th></tr>
+ ${d.rows.map((r,j)=>`<tr><td class="c">${fa(j+1)}</td><td><div style="display:flex;align-items:center"><input class="val" list="dl" data-p="days.${i}.rows.${j}.s" value="${val(r.s)}"><select class="pk noprint" data-pick="days.${i}.rows.${j}.s"><option value="">▾</option>${subOpts}</select></div><input class="nt val" placeholder="توضیح" data-p="days.${i}.rows.${j}.n" value="${val(r.n)}"></td>
  <td><input class="val tm" placeholder="۰:۰۰" data-p="days.${i}.rows.${j}.h" value="${val(r.h)}"></td>
  <td class="t"><input class="val" type="text" data-num="1" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.t" value="${val(r.t)}"></td>
  <td class="t cin"><input class="val" type="text" data-num="1" min="0" step="1" inputmode="numeric" data-p="days.${i}.rows.${j}.c" value="${val(r.c)}"></td><td class="rc"><span id="rw${i}_${j}"></span></td><td class="rc"><span id="rp${i}_${j}"></span></td></tr>`).join('')}</table>
- <div class="tot"><span>جمع ساعت مطالعه</span><span id="ds${i}"></span></div><div class="tot"><span>جمع تعداد تست</span><span id="dt${i}"></span></div><div class="tot"><span>جمع تست غلط</span><span id="dw${i}"></span></div><div class="tot"><span>درصد تست‌های روز</span><span id="dp${i}"></span></div></div>`).join('');
+ <div class="tot"><span>جمع ساعت مطالعه</span><span id="ds${i}"></span></div><div class="tot"><span>جمع تعداد تست</span><span id="dt${i}"></span></div><div class="tot"><span>جمع تست ${WL()}</span><span id="dw${i}"></span></div><div class="tot"><span>درصد تست‌های روز</span><span id="dp${i}"></span></div></div>`).join('');
  const panel=(title,key,ph,edit)=>`<div class="card"><h3>${title}</h3>${w[key].map((g,i)=>`<div class="li"><span>${fa(i+1)}</span><input type="checkbox" data-p="${key}.${i}.d" ${g.d&&!blank?'checked':''}><input type="text" class="val" placeholder="${ph}" data-p="${key}.${i}.t" value="${val(g.t)}"></div>`).join('')}<div class="gp" id="gp_${key}" style="font-size:12px;font-weight:600;margin-top:6px"></div></div>`;
  $('panels').innerHTML=panel('اهداف هفته','goals','هدف',1)+panel('کارهای روزمره','tasks','کار',1)+panel('مرورهای هفته','rev','درس',1)+panel('روتین‌های روزانه','subj','روتین',1);
  document.querySelectorAll('[data-s]').forEach(e=>e.value=st[e.dataset.s]);
@@ -772,7 +780,8 @@ function analyze(){
   else{const pr=prev.filter(x=>x.M>=60).map(x=>x.T/(x.M/60));
    if(pr.length){const q=avg(pr),c=q?(r-q)/q*100:0;if(c>=20)it.push(['ok','🧪','به‌ازای هر ساعت مطالعه تست بیشتری می‌زنی ('+fa(Math.round(r*10)/10)+' تست در ساعت، بالاتر از قبل).']);else if(c<=-20)it.push(['tip','🧪','نسبت تست به ساعت مطالعه کمتر از قبل شده ('+fa(Math.round(r*10)/10)+' تست در ساعت). اگر هدفت تست‌زنی است، بخشی از زمان را به آن اختصاص بده.'])}
    else it.push(['tip','🧪','نسبت تست به ساعت مطالعه: حدود '+fa(Math.round(r*10)/10)+' تست در هر ساعت.'])}}
- const h=good>bad+1?'جمع‌بندی: روندت خوب و رو به جلوست 👏':bad>good+1?'جمع‌بندی: نیاز به کمی تنظیم و جبران داری 🔧':'جمع‌بندی: وضعیتت متعادل است، با چند اصلاح کوچک بهتر هم می‌شود 🙂';
+ try{const lw=S.weeks[last.start],a=lw?accOf(lw.days,negOn()):null;if(a&&a.T>=10&&a.pct!=null){const pc=a.Wr/a.T*100;it.push(['tip','🎯',skipOn()?'از '+fa(a.T)+' تستِ نمره‌گذاری‌شده، '+fa(a.C)+' تا درست و '+fa(a.Wr)+' تا ('+P(pc)+'٪) «نزده» حساب شده؛ درصد کلی: '+pf(a.pct)+'٪.':'از '+fa(a.T)+' تستِ نمره‌گذاری‌شده، '+fa(a.C)+' تا درست و '+fa(a.Wr)+' تا غلط بوده؛ درصد کلی: '+pf(a.pct)+'٪.'])}}catch(e){}
+  const h=good>bad+1?'جمع‌بندی: روندت خوب و رو به جلوست 👏':bad>good+1?'جمع‌بندی: نیاز به کمی تنظیم و جبران داری 🔧':'جمع‌بندی: وضعیتت متعادل است، با چند اصلاح کوچک بهتر هم می‌شود 🙂';
  return{h,items:it}}
 function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
 function update(){
@@ -878,7 +887,7 @@ $('thAdd').onclick=()=>{const cu=S.settings.cthemes=S.settings.cthemes||{},k='c'
 $('bTh').onclick=()=>{const p=$('thp');p.classList.toggle('open');if(p.classList.contains('open'))thpRender()};
 function applyTheme(){const A=allTH(),k=A[S.settings.theme]?S.settings.theme:'gen',t=A[k],R=document.documentElement.style;
  [['--n',t.n],['--b',t.b],['--p',t.p],['--l',t.l],['--bd',t.d],['--hm',t.m]].forEach(x=>R.setProperty(x[0],x[1]));
- R.setProperty('--tile',bio(...t.c));R.setProperty('--ico',JSON.stringify(t.i+' '));
+ const _k=t.c.join('|');applyTheme._c=applyTheme._c||{};R.setProperty('--tile',applyTheme._c[_k]||(applyTheme._c[_k]=bio(...t.c)));R.setProperty('--ico',JSON.stringify(t.i+' '));
  if(window.setScene&&window.THEMEK!==k){window.THEMEK=k;setScene(TH[k]?k:'gen')}}
 
 // ===== Weekly goals, test accuracy, streak, subject share =====
@@ -895,6 +904,7 @@ function streakInfo(){const act=new Set();allDays().forEach(x=>{if(dayAct(x.d))a
  return{cur,best,today}}
 function dayGrade(d){let T=0,C=0,any=false;d.rows.forEach(r=>{const t=num(r.t);if(!t||r.c===''||r.c==null)return;any=true;T+=t;C+=Math.min(num(r.c),t)});
  if(!any&&d.c!==''&&d.c!=null){const t=dayTot(d).t;if(t){T=t;C=Math.min(num(d.c),t)}}return{T,C}}
+const skipOn=()=>S.settings.skip!==false,negOn=()=>!!S.settings.neg&&!skipOn(),WL=()=>skipOn()?'نزده':'غلط';
 function accOf(days,neg){let T=0,C=0;days.forEach(d=>{const g=dayGrade(d);T+=g.T;C+=g.C});const Wr=T-C;return{T,C,Wr,pct:T?((neg?C-Wr/3:C)/T*100):null}}
 function subAcc(days,neg){const mp=new Map();days.forEach(d=>d.rows.forEach(r=>{const t=num(r.t);if(!t||r.c===''||r.c==null)return;const n=(r.s||'').trim()||'بدون درس',key=nk(n)||'-',o=mp.get(key)||{n,T:0,C:0};o.T+=t;o.C+=Math.min(num(r.c),t);mp.set(key,o)}));
  return[...mp.values()].map(o=>({n:o.n,T:o.T,C:o.C,Wr:o.T-o.C,pct:(neg?o.C-(o.T-o.C)/3:o.C)/o.T*100})).sort((x,y)=>y.T-x.T)}
@@ -903,18 +913,18 @@ function renderGoals(){const w=W(),c=weekCalc(w),st=S.settings,gh=num(st.gh),gt=
  const pb=(label,cur,goal,curTxt,goalTxt,remTxt)=>{if(!goal)return `<div class="gi"><div class="gr"><span>${label}</span><span>${curTxt}</span></div><small>هدفی تعیین نشده؛ در کادر بالا وارد کن.</small></div>`;
   const p=Math.round(cur/goal*100);return `<div class="gi"><div class="gr"><span>${label}</span><b>${fa(p)}٪${p>=100?' ✅':''}</b></div><div class="pbar"><i style="width:${Math.min(100,p)}%"></i></div><small>${curTxt} از ${goalTxt}${p<100?' · مانده: '+remTxt:' · هدف محقق شد'}</small></div>`};
  $('goalOut').innerHTML=pb('پیشرفت ساعت مطالعه',c.M,gh*60,fmt(c.M),fa(gh)+' ساعت',fmt(Math.max(0,gh*60-c.M)))+pb('پیشرفت تعداد تست',c.T,gt,fa(c.T)+' تست',fa(gt)+' تست',fa(Math.max(0,gt-c.T))+' تست')}
-function renderAcc(){const w=W(),neg=!!S.settings.neg,wa=accOf(w.days,neg),ma=accOf(curMonthDays().map(x=>x.d),neg),ap=S.settings.accp==='m'?'m':'w';
+function renderAcc(){const w=W(),neg=negOn(),wa=accOf(w.days,neg),ma=accOf(curMonthDays().map(x=>x.d),neg),ap=S.settings.accp==='m'?'m':'w';
  w.days.forEach((d,i)=>{const g=dayGrade(d),el=$('dw'+i),pe=$('dp'+i);if(el)el.textContent=g.T?fa(g.T-g.C):'';if(pe){const a=accOf([d],neg);pe.textContent=a.pct==null?'':pf(a.pct)+'٪'}});
  w.days.forEach((d,i)=>d.rows.forEach((r,j)=>{const t=num(r.t),g=!blank&&t&&r.c!==''&&r.c!=null,c=g?Math.min(num(r.c),t):0,we=$('rw'+i+'_'+j),pe=$('rp'+i+'_'+j);if(we)we.textContent=g?fa(t-c):'';if(pe)pe.textContent=g?fa(Math.round((neg?c-(t-c)/3:c)/t*100))+'٪':''}));
  let pa=null;for(const k of Object.keys(S.weeks).filter(k=>k<w.start).sort().reverse()){const a=accOf(S.weeks[k].days,neg);if(a.T>0){pa=a;break}}
  const P=v=>v==null?'—':pf(v)+'٪',tot=w.days.reduce((a,d)=>a+dayTot(d).t,0);
  const sl=subAcc(ap==='w'?w.days:curMonthDays().map(x=>x.d),neg);
  const subH=`<div class="seg noprint" style="margin-top:10px"><button type="button" data-sh="a:w" class="${ap==='w'?'on':''}">به تفکیک درس: این هفته</button><button type="button" data-sh="a:m" class="${ap==='m'?'on':''}">این ماه</button></div>`+
-  (sl.length?sl.map(x=>`<div class="sh"><div class="sr"><span><i style="background:${subC(x.n)}"></i>${esc(x.n)}</span><b>${P(x.pct)}</b></div><div class="pbar"><i style="width:${Math.max(0,Math.min(100,x.pct))}%;background:${subC(x.n)}"></i></div><small>درست: ${fa(x.C)} · غلط: ${fa(x.Wr)} · از ${fa(x.T)} تست</small></div>`).join(''):'<div class="accHint">هنوز برای این بازه، تعداد «درست» هیچ درسی ثبت نشده است.</div>');
- if(!wa.T){$('accOut').innerHTML='<div class="accHint">در جدول هر روز، ستون «درست» را برای هر درس پر کن تا تعداد غلط و درصد (کلی و به تفکیک درس) محاسبه شود.</div>'+(ma.T?`<div class="accNote">درصد این ماه: ${P(ma.pct)}</div>`:'')+subH;return}
+  (sl.length?sl.map(x=>`<div class="sh"><div class="sr"><span><i style="background:${subC(x.n)}"></i>${esc(x.n)}</span><b>${P(x.pct)}</b></div><div class="pbar"><i style="width:${Math.max(0,Math.min(100,x.pct))}%;background:${subC(x.n)}"></i></div><small>درست: ${fa(x.C)} · ${WL()}: ${fa(x.Wr)} · از ${fa(x.T)} تست</small></div>`).join(''):'<div class="accHint">هنوز برای این بازه، تعداد «درست» هیچ درسی ثبت نشده است.</div>');
+ if(!wa.T){$('accOut').innerHTML='<div class="accHint">در جدول هر روز، ستون «درست» را برای هر درس پر کن تا تعداد '+WL()+' و درصد (کلی و به تفکیک درس) محاسبه شود.</div>'+(ma.T?`<div class="accNote">درصد این ماه: ${P(ma.pct)}</div>`:'')+subH;return}
  let tr='';if(pa&&pa.pct!=null&&wa.pct!=null){const d=wa.pct-pa.pct;tr=Math.abs(d)<0.05?'<div class="accNote">➖ تقریباً هم‌سطح هفته‌ی قبل</div>':`<div class="accNote">${d>0?'📈 ':'📉 '}${pf(Math.abs(d))}٪ ${d>0?'بهتر':'پایین‌تر'} از هفته‌ی قبل</div>`}
  const bars=w.days.map((d,i)=>{const a=accOf([d],neg);return `<div><span>${a.pct==null?'':fa(Math.round(a.pct))}</span><b style="height:${a.pct==null?0:Math.max(0,Math.min(100,a.pct))*0.7}%"></b><span>${D[i].slice(0,1)}</span></div>`}).join('');
- $('accOut').innerHTML=`<div class="accBig"><div class="st"><span>درست</span><b>${fa(wa.C)}</b></div><div class="st"><span>غلط</span><b>${fa(wa.Wr)}</b></div><div class="st"><span>درصد هفته</span><b>${P(wa.pct)}</b></div></div>`+tr+`<div class="accNote">درصد این ماه: ${P(ma.pct)}</div>`+(wa.T<tot?`<div class="accHint">از ${fa(tot)} تست این هفته، ${fa(wa.T)} تست نمره‌گذاری شده (ردیف‌هایی که ستون «درست» دارند).</div>`:'')+`<div class="dacc">${bars}</div>`+subH}
+ $('accOut').innerHTML=`<div class="accBig"><div class="st"><span>درست</span><b>${fa(wa.C)}</b></div><div class="st"><span>${WL()}</span><b>${fa(wa.Wr)}</b></div><div class="st"><span>درصد هفته</span><b>${P(wa.pct)}</b></div></div>`+tr+`<div class="accNote">درصد این ماه: ${P(ma.pct)}</div>`+(wa.T<tot?`<div class="accHint">از ${fa(tot)} تست این هفته، ${fa(wa.T)} تست نمره‌گذاری شده (ردیف‌هایی که ستون «درست» دارند).</div>`:'')+`<div class="dacc">${bars}</div>`+subH}
 function renderShare(){const st=S.settings,p=st.shp==='m'?'m':'w',k=st.shk==='t'?'t':'m';
  const days=p==='w'?W().days:curMonthDays().map(x=>x.d),mp=new Map();
  days.forEach(d=>d.rows.forEach(r=>{const v=k==='t'?num(r.t):mins(r);if(!v)return;const n=(r.s||'').trim()||'بدون درس',key=nk(n)||'-',o=mp.get(key)||{n,v:0};o.v+=v;mp.set(key,o)}));
@@ -922,11 +932,12 @@ function renderShare(){const st=S.settings,p=st.shp==='m'?'m':'w',k=st.shk==='t'
  $('shOut').innerHTML=arr.length?arr.map(x=>{const pc=x.v/tot*100;return `<div class="sh"><div class="sr"><span><i style="background:${subC(x.n)}"></i>${esc(x.n)}</span><b>${fa(Math.round(pc))}٪</b></div><div class="pbar"><i style="width:${pc}%;background:${subC(x.n)}"></i></div><small>${fv(x.v)}</small></div>`}).join('')+`<div class="shT">جمع: ${fv(tot)}</div>`:'<div class="accHint">هنوز داده‌ای برای این بازه ثبت نشده است.</div>';
  document.querySelectorAll('#shCard [data-sh]').forEach(b=>{const[a,v]=b.dataset.sh.split(':');b.classList.toggle('on',(a==='p'?p:k)===v)})}
 function extra(){try{renderGoals();renderAcc();renderShare()}catch(e){}}
-function syncG(){try{$('gH').value=S.settings.gh??'';$('gT').value=S.settings.gt??'';$('gN').checked=!!S.settings.neg}catch(e){}}
+function syncG(){try{$('gH').value=S.settings.gh??'';$('gT').value=S.settings.gt??'';$('gN').checked=!!S.settings.neg;$('gS').checked=skipOn();$('gN').disabled=skipOn()}catch(e){}}
 const _upd=update;update=function(){_upd();extra()};
 const _bld=build;build=function(){_bld();syncG()};
 document.addEventListener('input',e=>{const t=e.target,g=t.dataset&&t.dataset.g;if(!g)return;
- if(g==='neg')S.settings.neg=t.checked;else{const v=en(t.value);S.settings[g]=v===''?'':Math.max(0,Math.min(g==='gh'?168:5000,Math.floor(+v)||0))}
+ if(g==='skip'){S.settings.skip=t.checked;save();build();return}
+  if(g==='neg')S.settings.neg=t.checked;else{const v=en(t.value);S.settings[g]=v===''?'':Math.max(0,Math.min(g==='gh'?168:5000,Math.floor(+v)||0))}
  saveSoon();exSoon()});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-sh]');if(!b)return;const[a,v]=b.dataset.sh.split(':');S.settings[{p:'shp',k:'shk',a:'accp'}[a]]=v;save();renderShare();renderAcc()});
 let hadLS=false;try{hadLS=!!localStorage.getItem(KEY)}catch(e){}
@@ -941,6 +952,7 @@ let hadLS=false;try{hadLS=!!localStorage.getItem(KEY)}catch(e){}
  document.addEventListener('visibilitychange',function(){if(document.hidden)window.__bkNow()});
 })();
 load();
+try{if(!localStorage.getItem('planner-sat0-v1')){if(hadLS){const sd=W()&&W().days&&W().days[0];if(sd&&Array.isArray(sd.rows)){sd.rows.forEach(r=>{r.h='0';r.t='0';r.c='0';r.m=''});if(sd.c!==undefined&&sd.c!=='')sd.c='0'}}localStorage.setItem('planner-sat0-v1','1')}}catch(e){}
 save();
 build();
 if(!hadLS&&window.__bkRestore)window.__bkRestore(function(v){if(!v)return;try{const x=clean(JSON.parse(v,SAFE));if(x){S=x;S.settings={...defS,...x.settings};save();build()}}catch(e){}});
@@ -1127,7 +1139,7 @@ function cmpDelta(a,unit,dec){const last=a[a.length-1];if(last==null)return '';c
  const d=last-p;if(Math.abs(d)<0.05)return '<span>➖ بدون تغییر نسبت به هفته‌ی قبل</span>';
  return `<span style="color:${d>0?'#2e9e4f':'#c0392b'}">${d>0?'▲':'▼'} ${dec?pf(Math.abs(d)):fa(Math.round(Math.abs(d)))} ${unit} ${d>0?'بیشتر':'کمتر'} از هفته‌ی قبل</span>`}
 function renderCmp(){const el=$('cmpOut');if(!el)return;
- const n=[4,6,8,12].includes(+S.settings.cmpn)?+S.settings.cmpn:6,neg=!!S.settings.neg;
+ const n=[4,6,8,12].includes(+S.settings.cmpn)?+S.settings.cmpn:6,neg=negOn();
  document.querySelectorAll('#cmpSeg [data-cmpn]').forEach(b=>b.classList.toggle('on',+b.dataset.cmpn===n));
  const ws=Object.values(S.weeks).filter(w=>w.start<=W().start&&Array.isArray(w.days)).sort((a,b)=>a.start<b.start?-1:1).slice(-n);
  if(ws.length<2){el.innerHTML='<div class="accHint">برای مقایسه حداقل دو هفته لازم است. با «هفته جدید» هفته‌ی بعد را بساز.</div>';return}
@@ -1142,7 +1154,7 @@ function renderCmp(){const el=$('cmpOut');if(!el)return;
 /* ===== wiring ===== */
 const _ex0=extra;
 extra=function(){_ex0();try{renderExam()}catch(e){}try{renderCmp()}catch(e){}};
-const _b2=build;build=function(){_b2();try{renderMist()}catch(e){}};
+const _b2=build;build=function(){padRows();_b2();try{renderMist()}catch(e){}};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){try{renderExam();tmUI();bkInfo()}catch(e){}}});
 tmLoad();tmUI();bkInfo();
 try{renderExam();renderCmp();renderMist()}catch(e){}
