@@ -5,7 +5,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>try{var _d=localStorage.getItem('planner-dark-v1');if(_d===null)_d='0';if(_d==='1')document.documentElement.classList.add('dark')}catch(e){}</script>
-<title>ژن پیشرفت </title>
+<title>ژن پیشرفت</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{--n:#1b2a5c;--b:#2f80ed;--l:#eaf3ff;--p:#7c5cd6;--bd:#bcd6f7;box-sizing:border-box;color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -569,7 +569,7 @@ button:disabled{opacity:.45;cursor:default}
 }
 
 /* report card: theme gradient */
-body #repCard.card{background:linear-gradient(135deg,var(--n) 0%,var(--hm,var(--p)) 55%,var(--p) 100%) padding-box,linear-gradient(135deg,var(--b),var(--p)) border-box!important;border:2px solid transparent!important;box-shadow:0 22px 40px -22px var(--p)!important}
+body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,.28),transparent 42%) padding-box,radial-gradient(circle at 92% 96%,rgba(255,255,255,.18),transparent 45%) padding-box,linear-gradient(135deg,var(--n) 0%,var(--p) 38%,var(--b) 72%,var(--hm,var(--p)) 100%) padding-box,linear-gradient(135deg,var(--b),var(--p)) border-box!important;border:2px solid transparent!important;box-shadow:0 22px 40px -22px var(--p)!important}
 #repCard::after{display:none!important}
 #repCard h3{color:#fff!important;background:none!important;border-right-color:#fff!important}
 #repCard .accHint{color:#fff;opacity:.9}
@@ -578,10 +578,13 @@ body #repCard.card{background:linear-gradient(135deg,var(--n) 0%,var(--hm,var(--
 @media screen{html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}html.dark img,html.dark canvas{filter:invert(1) hue-rotate(180deg)}}
 #weakCard .wk{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;margin-inline-start:6px}
 #weakCard .wk.r{background:#fde8e8;color:#b42318}#weakCard .wk.o{background:#fff3dc;color:#9a5b00}#weakCard .wk.g{background:#e3f6e8;color:#1a7a3c}
+@media screen{html.dark #repCard.card{filter:invert(1) hue-rotate(180deg)}html.dark #repCard canvas{filter:none}}
+.uname{font-weight:700;font-size:13px;margin-top:3px}.uname:empty{display:none}
+.ai-sec{font-weight:800;font-size:13.5px;margin:14px 0 4px;padding-right:8px;border-right:4px solid var(--p)}.ai-score{margin-top:8px}.ai-score b{font-size:26px;color:var(--b)}.ai-score .sb{height:10px;background:#e8ecf6;border-radius:6px;overflow:hidden;margin-top:4px}.ai-score .sb i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--p))}
 </style></head>
 <body>
 <div class="wrap">
-<header><img class="hbanner" decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="تصویر علوم زیستی و آزمایشگاهی"><div class="htxt"><h1 id="hT"></h1><small id="hS"></small><p class="mot">✨ قدم‌های کوچکِ امروز، قله‌ی بزرگِ فردا هستند؛ ادامه بده، تو از آنچه فکر می‌کنی به هدفت نزدیک‌تری. ✨</p><div class="exam noprint" id="hX"></div></div><div class="cr cr2"><span class="cr-l">طراحی توسط</span><span class="cr-n">امیرعلی ابراهیم‌پور</span></div><div class="goal" id="hG"></div></header>
+<header><img class="hbanner" decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="تصویر علوم زیستی و آزمایشگاهی"><div class="htxt"><h1 id="hT"></h1><small id="hS"></small><p class="mot">✨ قدم‌های کوچکِ امروز، قله‌ی بزرگِ فردا هستند؛ ادامه بده، تو از آنچه فکر می‌کنی به هدفت نزدیک‌تری. ✨</p><div class="uname" id="hN"></div><div class="exam noprint" id="hX"></div></div><div class="cr cr2"><span class="cr-l">طراحی توسط</span><span class="cr-n">امیرعلی ابراهیم‌پور</span></div><div class="goal" id="hG"></div></header>
 
 <div class="bar noprint">
 <select id="th" title="تم"></select><button id="bTh" class="g">🎨 مدیریت تم‌ها</button><button id="bDk" class="g" type="button">🌙 حالت تاریک</button><select id="wk"></select>
@@ -607,6 +610,7 @@ body #repCard.card{background:linear-gradient(135deg,var(--n) 0%,var(--hm,var(--
 
 <div class="noprint">
 <div class="card"><h3>تنظیمات</h3>
+<div class="li"><b>👤 نام و نام خانوادگی</b> <input type="text" data-s="uname" maxlength="40" placeholder="مثلاً علی رضایی" style="max-width:220px"> <small>روی هدر، چاپ و کارت گزارش هفته نمایش داده می‌شود</small></div>
 <div class="li">عنوان <input type="text" data-s="title"> شعار <input type="text" data-s="slogan"></div>
 <div class="li">هدف <input type="text" data-s="goal"> </div>
 <div class="li" style="flex-wrap:wrap"><b>شمارش معکوس آزمون:</b> نام <input type="text" data-x="n" maxlength="40" placeholder="مثلاً کنکور" style="max-width:130px"> تاریخ آزمون <input type="date" data-x="d"> هدف کل تست <input type="text" data-num="1" data-x="t" min="0" max="100000" inputmode="numeric" placeholder="مثلاً ۵۰۰۰" style="width:90px"> شمارش از <input type="date" data-x="s"></div>
@@ -674,7 +678,7 @@ const jal=iso=>{const[y,m,d]=iso.split('-').map(Number);const j=g2j(y,m,d);retur
 const lastSat=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return d.toISOString().slice(0,10)};
 
 const KEY='genetics-planner-v2';
-const defS={title:'برنامه مطالعه هفتگی',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8,cols:{}};
+const defS={uname:'',title:'برنامه مطالعه هفتگی',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8,cols:{}};
 const lst=(n,names)=>Array.from({length:n},(_,i)=>({t:names?names[i]||'':'',d:false}));
 const ROWS=9;
 function padRows(){try{Object.values(S.weeks).forEach(w=>w&&Array.isArray(w.days)&&w.days.forEach(d=>{if(!d||!Array.isArray(d.rows))return;while(d.rows.length<ROWS)d.rows.push({s:'',h:'',m:'',t:'',n:''})}))}catch(e){}}
@@ -704,7 +708,7 @@ function build(){
  const w=W(),st=S.settings;
  applyTheme();thSel();document.documentElement.style.setProperty('--pm',st.pm+'mm');
  document.body.classList.toggle('nodna',!st.dna);document.body.classList.toggle('nohdr',!st.hdr);document.body.classList.toggle('blank',blank);
- $('hT').textContent=st.title;$('hS').textContent=st.slogan;$('hG').textContent=st.goal;
+ $('hT').textContent=st.title;{const hn=$('hN');if(hn)hn.textContent=st.uname?'👤 '+st.uname:''}$('hS').textContent=st.slogan;$('hG').textContent=st.goal;
  renderSubCols();$('dl').innerHTML=st.subs.split(/[,،]/).map(s=>`<option value="${esc(s.trim())}">`).join('');
  $('wk').innerHTML=Object.keys(S.weeks).sort().reverse().map(k=>`<option value="${k}" ${k===S.cur?'selected':''}>هفته ${jal(k)}</option>`).join('');
  $('st').value=w.start;
@@ -771,43 +775,79 @@ function monthChart(k){k=k||'m';
 function analyze(){
  const cw=W().start,ws=Object.values(S.weeks).filter(w=>w.start<=cw).sort((a,b)=>a.start<b.start?-1:1);
  const info=ws.map(w=>{const d=w.days.map(dayTot),sub={};w.days.forEach(x=>x.rows.forEach(r=>{const m=mins(r);if(!m)return;const n=(r.s||'').trim()||'بدون درس';sub[n]=(sub[n]||0)+m}));
-  return{start:w.start,M:d.reduce((a,x)=>a+x.m,0),T:d.reduce((a,x)=>a+x.t,0),act:d.filter(x=>x.m>0||x.t>0).length,d,sub}}).filter(x=>x.M>0||x.T>0);
- if(!info.length)return{h:'هنوز داده‌ای برای تحلیل ثبت نشده',items:[['tip','💡','ساعت مطالعه و تعداد تست را در جدول روزها وارد کن؛ بعد از ثبت اولین هفته، تحلیل و پیشنهادها اینجا ظاهر می‌شود.']]};
- const last=info[info.length-1],prev=info.slice(0,-1).slice(-4),it=[],P=x=>fa(Math.round(x)),avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
- const live=last.start===cw;let good=0,bad=0;
- it.push(['tip','🗓️',(live?'هفته‌ی جاری':'آخرین هفته‌ی ثبت‌شده')+': '+fmt(Math.round(last.M))+' مطالعه و '+fa(last.T)+' تست در '+fa(last.act)+' روز فعال.']);
- if(prev.length){
-  const pm=avg(prev.map(x=>x.M)),pt=avg(prev.map(x=>x.T)),dm=pm?(last.M-pm)/pm*100:0,dt=pt?(last.T-pt)/pt*100:0;
-  if(dm>=10){good++;it.push(['ok','📈','زمان مطالعه‌ات حدود '+P(dm)+'٪ بیشتر از میانگین '+fa(prev.length)+' هفته‌ی قبل است. ادامه بده.'])}
-  else if(dm<=-10){bad++;it.push(['warn','📉','زمان مطالعه‌ات حدود '+P(-dm)+'٪ کمتر از میانگین '+fa(prev.length)+' هفته‌ی قبل است.'+(live?' اگر هفته هنوز تمام نشده، ممکن است تا پایانش جبران شود.':' برای جبران، چند بلوک کوتاه ثابت در روزهای کم‌بازده بگذار.')])}
-  else{good++;it.push(['ok','⚖️','زمان مطالعه‌ات نسبت به میانگین هفته‌های قبل تقریباً ثابت است؛ ثبات خوبی داری.'])}
-  if(pt>0){if(dt>=15){good++;it.push(['ok','✅','تعداد تست‌هایت حدود '+P(dt)+'٪ بیشتر از میانگین هفته‌های قبل است.'])}
-   else if(dt<=-15){bad++;it.push(['warn','⚠️','تعداد تست‌هایت حدود '+P(-dt)+'٪ کمتر از میانگین هفته‌های قبل است. تست‌زدن را به برنامه‌ی روزانه برگردان.'])}}
- }
+  return{start:w.start,M:d.reduce((a,x)=>a+x.m,0),T:d.reduce((a,x)=>a+x.t,0),act:d.filter(x=>x.m>0||x.t>0).length,d,sub,rows:w.days.reduce((n,x)=>n+x.rows.filter(r=>mins(r)>0).length,0)}}).filter(x=>x.M>0||x.T>0);
+ if(!info.length)return{h:'هنوز چیزی ثبت نکردی که تحلیل کنم',items:[['tip','💡','ساعت مطالعه و تعداد تستت رو توی جدول روزها وارد کن. بعد از ثبت اولین هفته، تحلیل کامل و نقطه‌ضعف‌هات همین‌جا میاد.']]};
+ const last=info[info.length-1],prev=info.slice(0,-1).slice(-4),it=[],add=(c,e,t)=>it.push([c,e,t]),sec=t=>it.push(['sec','',t]),P=x=>fa(Math.round(x)),avg=a=>a.reduce((x,y)=>x+y,0)/a.length,F1=v=>fa(Math.round(v*10)/10).replace('.','٫');
+ const dd=Math.round((new Date(iso8(new Date())+'T12:00:00')-new Date(cw+'T12:00:00'))/864e5),now=last.start===cw&&dd>=0&&dd<=6,idx=now?dd:6,rem=7-idx;
+ const neg=negOn(),end=addD(cw,6),c1=addD(end,-28),c0=addD(end,-56),ad=allDays(),per=(a,b)=>subAcc(ad.filter(x=>x.iso>a&&x.iso<=b).map(x=>x.d),neg);
+ const acN=per(c1,end),acP=new Map(per(c0,c1).map(x=>[nk(x.n),x])),lw=S.weeks[last.start],aw=lw?accOf(lw.days,neg):null,st=S.settings,gh=num(st.gh),gt=num(st.gt);
+ let sc={act:0,trend:12,goal:12,acc:12,bal:10};
+ /* ---- ۱) خلاصه‌ی هفته ---- */
+ sec('📊 خلاصه‌ی هفته');
+ add('tip','🗓️',(now?'این هفته تا همین الان':'توی آخرین هفته‌ای که ثبت کردی')+' '+fmt(Math.round(last.M))+' درس خوندی، '+fa(last.T)+' تا تست زدی و '+fa(last.act)+' روز فعال بودی.');
+ const sk=streakInfo();if(sk.cur>=3)add('ok','🔥','الان '+fa(sk.cur)+' روزه پشت سر هم مطالعه کردی'+(sk.best>sk.cur?' (رکوردت '+fa(sk.best)+' روزه، بشکنش!)':' و این رکورد خودته. آفرین!')+'');
+ if(last.act>=7){add('warn','😮‍💨','هر هفت روز رو خوندی. مغز هم استراحت می‌خواد؛ یه روزِ سبک یا کاملاً آزاد بذار تا فرسوده نشی.');sc.act=26}
+ else if(last.act>=5){add('ok','💪','تو '+fa(last.act)+' روز از هفته فعال بودی؛ نظمت خوبه.');sc.act=Math.min(30,last.act*5)}
+ else{add('warn','📅','فقط '+fa(last.act)+' روز فعالیت ثبت شده. بهتره کم‌کم ولی تو روزهای بیشتر بخونی؛ یادگیریِ پخش‌شده خیلی ماندگارتره.');sc.act=last.act*5}
+ /* ---- ۲) روند ---- */
+ if(prev.length){const pm=avg(prev.map(x=>x.M)),pt=avg(prev.map(x=>x.T)),dm=pm?(last.M-pm)/pm*100:0,dt=pt?(last.T-pt)/pt*100:0;
+  if(dm>=10){add('ok','📈','زمان مطالعه‌ت حدود '+P(dm)+'٪ از میانگین '+fa(prev.length)+' هفته‌ی قبل بیشتره. همین‌طوری ادامه بده!');sc.trend=20}
+  else if(dm<=-10){add('warn','📉','زمان مطالعه‌ت حدود '+P(-dm)+'٪ از میانگین '+fa(prev.length)+' هفته‌ی قبل کمتره.'+(now?' هنوز هفته تموم نشده، می‌تونی جبران کنی.':' هفته‌ی بعد چند بلوک کوتاه و ثابت بذار تا برگردی سر ریتمت.'));sc.trend=8}
+  else{add('ok','⚖️','زمان مطالعه‌ت با هفته‌های قبل تقریباً یکسانه؛ ثبات خوبی داری.');sc.trend=16}
+  if(pt>0){if(dt>=15)add('ok','✅','تعداد تستت حدود '+P(dt)+'٪ از قبل بیشتر شده. عالیه!');else if(dt<=-15)add('warn','⚠️','تعداد تستت حدود '+P(-dt)+'٪ از قبل کمتر شده. تست زدن رو دوباره بیار توی برنامه‌ی روزانه.')}}
  if(info.length>=3){const y=info.slice(-6).map(x=>x.M),n=y.length,mx=(n-1)/2,my=avg(y);let nu=0,de=0;y.forEach((v,i)=>{nu+=(i-mx)*(v-my);de+=(i-mx)*(i-mx)});const sl=de&&my?nu/de/my*100:0;
-  if(sl>=6){good++;it.push(['ok','🚀','روند چندهفته‌ات صعودی است (حدود '+P(sl)+'٪ رشد در هر هفته).'])}
-  else if(sl<=-6){bad++;it.push(['warn','🔻','روند چندهفته‌ات رو به کاهش است (حدود '+P(-sl)+'٪ افت در هر هفته). بهتر است مقدار هدف هفتگی را کمی سبک‌تر ولی ثابت کنی.'])}
-  else it.push(['tip','➖','روند ساعت مطالعه در هفته‌های اخیر تقریباً بدون تغییر است.'])}
- if(last.act>=7){it.push(['warn','😮‍💨','هر هفت روز را مطالعه کرده‌ای. برای جلوگیری از فرسودگی یک روز سبک یا استراحت در هفته بگذار.'])}
- else if(last.act>=5){good++;it.push(['ok','💪','در '+fa(last.act)+' روز از هفته فعال بوده‌ای؛ نظم خوبی داری.'])}
- else{bad++;it.push(['warn','📅','فقط در '+fa(last.act)+' روز فعالیت ثبت شده. مطالعه‌ی کوتاه‌تر ولی در روزهای بیشتر معمولاً ماندگارتر است.'])}
- const tm=last.d.map(x=>x.m),mxd=Math.max(...tm),sh=last.M?mxd/last.M*100:0;
- if(last.act>=3&&sh>=35){bad++;it.push(['warn','🧱','حدود '+P(sh)+'٪ مطالعه‌ی این هفته در «'+D[tm.indexOf(mxd)]+'» جمع شده. پخش‌کردن آن بین روزها بازده را بالا می‌برد.'])}
+  if(sl>=6)add('ok','🚀','چند هفته‌ست روندت صعوده (حدود '+P(sl)+'٪ رشد در هر هفته). عالی داری پیش می‌ری.');
+  else if(sl<=-6)add('warn','🔻','چند هفته‌ست روندت رو به پایینه (حدود '+P(-sl)+'٪ افت در هر هفته). هدف هفتگی رو یه کم سبک‌تر ولی ثابت کن، بهتر از اینه که یهو رها بشه.')}
+ /* ---- ۳) نقطه‌ضعف‌ها و نقطه‌قوت‌ها ---- */
+ const rec=info.slice(-4),tot={};rec.forEach(x=>Object.entries(x.sub).forEach(([n,m])=>{const k=nk(n);tot[k]=tot[k]||{n,m:0};tot[k].m+=m}));const all=Object.values(tot).reduce((a,b)=>a+b.m,0),ent=Object.values(tot).sort((a,b)=>b.m-a.m);
+ const gs=acN.filter(x=>x.T>=8).sort((a,b)=>a.pct-b.pct);
+ sec('🧩 نقطه‌ضعف‌ها و نقطه‌قوت‌ها');
+ if(gs.length){
+  gs.slice(0,3).filter(x=>x.pct<75).forEach((x,i)=>{const p=Math.max(0,x.pct),sh=all&&tot[nk(x.n)]?tot[nk(x.n)].m/all*100:0,o=acP.get(nk(x.n)),d=o&&o.T>=8?x.pct-o.pct:null,tr=d==null?'':Math.abs(d)<2?' (نسبت به ۴ هفته‌ی قبل‌تر تقریباً ثابته)':d>0?' (خوبه که '+P(d)+'٪ نسبت به ۴ هفته‌ی قبل‌تر بهتر شده)':' (و متأسفانه '+P(-d)+'٪ نسبت به ۴ هفته‌ی قبل‌تر افت داشته)';
+   if(p<50)add('warn','🚨','«'+esc(x.n)+'» الان نقطه‌ضعف اصلیته: فقط '+P(p)+'٪ تستاش درسته'+tr+'. '+(sh<12?'سهمش از زمانت هم فقط '+P(sh)+'٪ بوده؛ یعنی هم کم می‌خونیش هم ضعیفه. این هفته اولویت اولته.':'با اینکه '+P(sh)+'٪ از زمانت رو بهش می‌دی، بازده پایینه. به‌جای خوندنِ بیشتر، تست‌زدن و مرور اشتباهاتش رو بیشتر کن.'));
+   else add('tip','🔎','«'+esc(x.n)+'» با '+P(p)+'٪ هنوز جای کار داره'+tr+'. چند تست مبحثی بزن و اشتباهاتش رو توی دفترچه بنویس تا به بالای ۷۰٪ برسه.')});
+  const bt=gs[gs.length-1];if(bt.pct>=75&&gs.length>1)add('ok','🌟','قوی‌ترین درست «'+esc(bt.n)+'» با '+P(bt.pct)+'٪ درصده. حفظش کن، ولی وقتت رو بذار روی درس‌های ضعیف‌تر.');
+  const fast=gs.find(x=>x.pct<60&&all&&tot[nk(x.n)]&&tot[nk(x.n)].m/all*100>=25);if(fast&&fast.pct>=50)add('tip','🧠','«'+esc(fast.n)+'» زمان زیادی ازت می‌گیره ولی درصدش '+P(fast.pct)+'٪ مونده؛ شاید روش مطالعه‌ش مشکل داره. به‌جای دوباره‌خوانی، سؤال‌حل‌کردن و خلاصه‌نویسی امتحان کن.')}
+ else add('tip','📝','هنوز برای هیچ درسی حداقل ۸ تست نمره‌گذاری‌شده ندارم تا نقطه‌ضعف‌ها رو دقیق بگم. ستون «درست» رو برای هر درس پر کن.');
+ const nog=ent.filter(x=>all&&x.m/all*100>=10&&!acN.some(a=>nk(a.n)===nk(x.n)));if(nog.length)add('tip','🕳️','برای '+nog.slice(0,3).map(x=>'«'+esc(x.n)+'»').join('، ')+' زمان ثبت کردی ولی تعداد «درست» خالیه، پس نمی‌تونم بفهمم تو این درس‌ها چقدر مسلطی.');
+ if(ent.length>1&&all){const p=ent[0].m/all*100;if(p>=40)add('warn','🎯','«'+esc(ent[0].n)+'» حدود '+P(p)+'٪ کل زمان '+fa(rec.length)+' هفته‌ی اخیرت رو گرفته. اگه عمدی نیست، بقیه‌ی درس‌ها رو هم جدی بگیر.');else{add('ok','⚖️','زمانت بین درس‌ها متعادل پخش شده؛ بیشترین سهم مال «'+esc(ent[0].n)+'» ('+P(p)+'٪) ـه.');sc.bal=10}if(p>=40)sc.bal=5}
+ const seen=new Set(Object.keys(tot)),miss=String(st.subs||'').split(/[,،]/).map(x=>x.trim()).filter(x=>x&&!seen.has(nk(x)));
+ if(miss.length&&all)add('tip','📚','تو '+fa(rec.length)+' هفته‌ی اخیر برای این درس‌ها وقتی نذاشتی: '+miss.slice(0,5).map(esc).join('، ')+(miss.length>5?' و …':'')+'. اگه تو برنامه‌شونه، یه بلوک کوتاه براشون جا بده.');
+ /* ---- ۴) عادت‌های مطالعه ---- */
+ sec('🧭 عادت‌های مطالعه');
+ const tm=last.d.map(x=>x.m),mxd=Math.max(...tm),sh1=last.M?mxd/last.M*100:0;
+ if(last.act>=3&&sh1>=35)add('warn','🧱','حدود '+P(sh1)+'٪ مطالعه‌ی این هفته‌ت تو «'+D[tm.indexOf(mxd)]+'» تلنبار شده. پخش‌کردنش بین روزها بازده رو بالا می‌بره.');
  if(info.length>=2){const by=D.map(()=>[]);info.forEach(x=>x.d.forEach((d,i)=>by[i].push(d.m)));const av=by.map(a=>avg(a)),hi=av.indexOf(Math.max(...av)),lo=av.indexOf(Math.min(...av));
-  if(hi!==lo&&av[hi]>0)it.push(['tip','🗓️','در طول هفته‌ها، پرکارترین روزت «'+D[hi]+'» و کم‌کارترین «'+D[lo]+'» است. می‌توانی برای '+D[lo]+' یک هدف سبک ثابت بگذاری.'])}
- const rec=info.slice(-4),tot={};rec.forEach(x=>Object.entries(x.sub).forEach(([n,m])=>tot[n]=(tot[n]||0)+m));const all=Object.values(tot).reduce((a,b)=>a+b,0),ent=Object.entries(tot).sort((a,b)=>b[1]-a[1]);
- if(ent.length>1&&all){const[tn,tv]=ent[0],p=tv/all*100;if(p>=40){bad++;it.push(['warn','🎯','«'+esc(tn)+'» حدود '+P(p)+'٪ کل زمان مطالعه‌ی '+fa(rec.length)+' هفته‌ی اخیر را گرفته. اگر عمدی نیست، زمان بقیه‌ی درس‌ها را متعادل کن.'])}else{good++;it.push(['ok','🎯','توزیع زمان بین درس‌ها متعادل است؛ بیشترین سهم مربوط به «'+esc(tn)+'» ('+P(p)+'٪) است.'])}}
- const seen=new Set(Object.keys(tot).map(nk)),miss=String(S.settings.subs||'').split(/[,،]/).map(x=>x.trim()).filter(x=>x&&!seen.has(nk(x)));
- if(miss.length&&all){it.push(['tip','📚','در '+fa(rec.length)+' هفته‌ی اخیر برای این درس‌ها زمانی ثبت نشده: '+miss.slice(0,5).map(esc).join('، ')+(miss.length>5?' و …':'')+'. اگر برایشان برنامه داری، یک بلوک کوتاه جا بده.'])}
+  if(hi!==lo&&av[hi]>0)add('tip','🗓️','پرکارترین روزت معمولاً «'+D[hi]+'» و کم‌کارترینش «'+D[lo]+'» ـه. برای '+D[lo]+' یه هدف سبک ولی ثابت بذار.');
+  const wk=avg([av[5],av[6]]),wd=avg(av.slice(0,5));if(wd>0&&wk<wd*.4)add('warn','🏖️','آخر هفته‌ها (پنجشنبه و جمعه) کلاً کم‌کاری می‌کنی. حتی یه ساعت مرور سبک اون روزها، جلوی فراموشی رو می‌گیره.')}
+ if(last.rows>0){const bl=last.M/last.rows;if(bl>=150)add('tip','⏱️','میانگین هر بلوکت حدود '+fmt(Math.round(bl))+' ـه که طولانیه. هر ۴۵–۶۰ دقیقه ۵ تا ۱۰ دقیقه استراحت کنی تمرکزت بهتر می‌مونه.');else if(bl<25&&last.rows>=5)add('tip','⏱️','بلوک‌هات خیلی کوتاهن (میانگین حدود '+fa(Math.round(bl))+' دقیقه). برای مباحث سنگین، بلوک‌های ۴۰–۶۰ دقیقه‌ای تمرکز عمیق‌تری می‌دن.');else add('ok','⏱️','طول بلوک‌های مطالعه‌ت (حدود '+fmt(Math.round(bl))+') اندازه‌ی خوبیه.')}
  if(last.M>=60){const r=last.T/(last.M/60);
-  if(last.T===0){it.push(['tip','📝','این هفته تستی ثبت نشده. بعد از هر جلسه‌ی مطالعه چند تست بزن تا یادگیری سنجیده شود.'])}
+  if(last.T===0)add('tip','📝','این هفته هیچ تستی ثبت نشده. بعد از هر جلسه چند تا تست بزن تا بفهمی چی یاد گرفتی.');
   else{const pr=prev.filter(x=>x.M>=60).map(x=>x.T/(x.M/60));
-   if(pr.length){const q=avg(pr),c=q?(r-q)/q*100:0;if(c>=20)it.push(['ok','🧪','به‌ازای هر ساعت مطالعه تست بیشتری می‌زنی ('+fa(Math.round(r*10)/10)+' تست در ساعت، بالاتر از قبل).']);else if(c<=-20)it.push(['tip','🧪','نسبت تست به ساعت مطالعه کمتر از قبل شده ('+fa(Math.round(r*10)/10)+' تست در ساعت). اگر هدفت تست‌زنی است، بخشی از زمان را به آن اختصاص بده.'])}
-   else it.push(['tip','🧪','نسبت تست به ساعت مطالعه: حدود '+fa(Math.round(r*10)/10)+' تست در هر ساعت.'])}}
- try{const lw=S.weeks[last.start],a=lw?accOf(lw.days,negOn()):null;if(a&&a.T>=10&&a.pct!=null){const pc=a.Wr/a.T*100;it.push(['tip','🎯',skipOn()?'از '+fa(a.T)+' تستِ نمره‌گذاری‌شده، '+fa(a.C)+' تا درست و '+fa(a.Wr)+' تا ('+P(pc)+'٪) «نزده» حساب شده؛ درصد کلی: '+pf(a.pct)+'٪.':'از '+fa(a.T)+' تستِ نمره‌گذاری‌شده، '+fa(a.C)+' تا درست و '+fa(a.Wr)+' تا غلط بوده؛ درصد کلی: '+pf(a.pct)+'٪.'])}}catch(e){}
-  const h=good>bad+1?'جمع‌بندی: روندت خوب و رو به جلوست 👏':bad>good+1?'جمع‌بندی: نیاز به کمی تنظیم و جبران داری 🔧':'جمع‌بندی: وضعیتت متعادل است، با چند اصلاح کوچک بهتر هم می‌شود 🙂';
- return{h,items:it}}
-function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
+   if(pr.length){const q=avg(pr),c=q?(r-q)/q*100:0;if(c>=20)add('ok','🧪','به‌ازای هر ساعت مطالعه تست بیشتری می‌زنی ('+F1(r)+' تست تو ساعت، بالاتر از قبل).');else if(c<=-20)add('tip','🧪','نسبت تست به ساعت مطالعه‌ت از قبل کمتر شده ('+F1(r)+' تست تو ساعت). اگه هدفت تست‌زدنه، بخشی از زمان رو بذار برای اون.')}
+   else add('tip','🧪','نسبت تست به مطالعه‌ت حدود '+F1(r)+' تست تو هر ساعته.')}}
+ const wa=info.slice(-4).map(x=>{const w=S.weeks[x.start],a=w?accOf(w.days,neg):null;return a&&a.T>=10&&a.pct!=null?a.pct:null}).filter(v=>v!=null);
+ if(aw&&aw.T>=10&&aw.pct!=null){const pc=aw.Wr/aw.T*100;sc.acc=Math.max(0,Math.min(1,aw.pct/80))*20;
+  add(aw.pct>=70?'ok':aw.pct>=50?'tip':'warn','🎯',skipOn()?'از '+fa(aw.T)+' تستِ نمره‌گذاری‌شده، '+fa(aw.C)+' تا درست بوده و '+fa(aw.Wr)+' تا ('+P(pc)+'٪) «نزده» حساب شده؛ درصد کلیت '+pf(aw.pct)+'٪ ـه.':'از '+fa(aw.T)+' تستِ نمره‌گذاری‌شده، '+fa(aw.C)+' تا درست و '+fa(aw.Wr)+' تا غلط بوده؛ درصد کلیت '+pf(aw.pct)+'٪ ـه.');
+  if(wa.length>=3){const dlt=(wa[wa.length-1]-wa[0])/(wa.length-1);if(dlt>=3)add('ok','📈','درصد تستات چند هفته‌ست بالا میاد (حدود '+pf(dlt)+'٪ در هر هفته). یعنی روش مطالعه‌ت جواب داده!');else if(dlt<=-3)add('warn','📉','درصد تستات چند هفته‌ست پایین میاد (حدود '+pf(-dlt)+'٪ در هر هفته). شاید عجله می‌کنی یا مباحث جدید رو بدون مرور رد کردی؛ چند روز رو بذار برای مرور اشتباهات.')}
+  if(prev.length&&last.M>=60){const pr=prev.filter(x=>x.M>=60).map(x=>x.T/(x.M/60));if(pr.length&&wa.length>=2&&last.T/(last.M/60)>avg(pr)*1.2&&wa[wa.length-1]<wa[wa.length-2]-3)add('warn','⚡','تعداد تست تو ساعتت بالا رفته ولی درصدت پایین اومده؛ یعنی کمی با عجله تست می‌زنی. یه کم آروم‌تر بزن و سؤال‌های غلط رو تحلیل کن.')}}
+ /* ---- ۵) هدف‌ها و آزمون ---- */
+ sec('🏁 هدف‌ها و آزمون');
+ let gtxt=false;
+ if(gh&&last.start===cw){const need=Math.max(0,gh*60-last.M);gtxt=true;if(need===0){add('ok','🏆','هدف ساعت مطالعه‌ی این هفته ('+fa(gh)+' ساعت) رو زدی. دمت گرم!');sc.goal=20}else{const pd=need/rem;sc.goal=Math.min(1,last.M/(gh*60*(idx+1)/7))*20;add(pd>5*60?'warn':'tip','⏳','برای رسیدن به هدف '+fa(gh)+' ساعتی، '+fmt(Math.round(need))+' دیگه مونده؛ یعنی روزی حدود '+fmt(Math.round(pd))+' تا آخر هفته.'+(pd>5*60?' این یه کم زیاده؛ شاید بهتر باشه هدف هفته‌ی بعد رو واقع‌بینانه‌تر بذاری.':''))}}
+ if(gt&&last.start===cw){const need=Math.max(0,gt-last.T);gtxt=true;if(need===0)add('ok','🏆','هدف تست این هفته ('+fa(gt)+' تا) رو هم کامل کردی!');else add(need/rem>120?'warn':'tip','📝','تا هدف '+fa(gt)+' تستی '+fa(need)+' تا مونده؛ روزی حدود '+fa(Math.ceil(need/rem))+' تست کافیه.')}
+ try{const ex=st.exam&&typeof st.exam==='object'?st.exam:{};if(/^\d{4}-\d{2}-\d{2}$/.test(String(ex.d||''))){const n=Math.round((new Date(ex.d+'T12:00:00')-new Date(iso8(new Date())+'T12:00:00'))/864e5),nm=String(ex.n||'').trim()||'آزمون';
+  if(n>0){gtxt=true;const T0=num(ex.t);add(n<=30?'warn':'tip','⏳','تا '+esc(nm)+' '+fa(n)+' روز مونده.'+(n<=30?' وارد فاز جمع‌بندی شدی: مرور اشتباهات و آزمون‌های کامل از اینجا به بعد بیشترین بازده رو داره.':' هنوز وقت داری، فقط ثابت‌قدم بمون.'));
+   if(T0>0){const s0=/^\d{4}-\d{2}-\d{2}$/.test(String(ex.s||''))?ex.s:null;let done=0;ad.forEach(x=>{if(!s0||x.iso>=s0)done+=dayTot(x.d).t});const left=Math.max(0,T0-done),pd=avg(rec.map(x=>x.T))/7,proj=Math.round(pd*n);
+    if(left===0)add('ok','🎉','هدف '+fa(T0)+' تستیت برای '+esc(nm)+' کامل شده!');else if(pd*n>=left)add('ok','🔮','با سرعت فعلیت (روزی حدود '+fa(Math.round(pd))+' تست) تا '+esc(nm)+' حدود '+fa(proj)+' تست دیگه می‌زنی و به هدفت می‌رسی. همین روند خوبه.');else add('warn','🔮','با سرعت فعلیت (روزی حدود '+fa(Math.round(pd))+' تست) تا '+esc(nm)+' حدود '+fa(proj)+' تست می‌زنی و '+fa(left-proj)+' تا از هدف کم میاری. باید روزی حدود '+fa(Math.ceil(left/n))+' تست بزنی.')}}}}catch(e){}
+ if(!gtxt)add('tip','🎯','هدف هفتگی یا تاریخ آزمون ثبت نکردی. توی «تنظیمات» و «هدف هفتگی» وارد کن تا بتونم برات پیش‌بینی و برنامه‌ریزی کنم.');
+ /* ---- ۶) برنامه‌ی پیشنهادی هفته‌ی بعد ---- */
+ sec('🗺️ پیشنهاد برای هفته‌ی بعد');
+ const baseM=avg(info.slice(-4).map(x=>x.M)),baseT=avg(info.slice(-4).map(x=>x.T)),tH=gh||Math.max(1,Math.round(baseM*1.08/60)),tT=gt||Math.round(baseT*1.08/10)*10,foc=gs.filter(x=>x.pct<70).slice(0,2).map(x=>'«'+esc(x.n)+'»');
+ add('tip','✨','پیشنهاد من: حدود '+fa(tH)+' ساعت مطالعه'+(tT>0?' و '+fa(tT)+' تست':'')+(foc.length?'، و حدود ۴۰٪ زمانت رو بذار روی '+foc.join(' و '):'')+'. یه روزِ سبک هم برای استراحت بذار و آخر هفته یه مرور کوتاه از اشتباهاتت بکن.');
+ const score=Math.round(Math.max(0,Math.min(100,sc.act+sc.trend+sc.goal+sc.acc+sc.bal))),lv=score>=75?'عالی داری پیش می‌ری 👏':score>=55?'خوبه، با چند اصلاح کوچیک عالی هم می‌شه 🙂':'یه کم باید تنظیمش کنی، ولی دیر نشده 🔧';
+ return{h:'جمع‌بندی: '+lv+'<div class="ai-score"><b>'+fa(score)+'</b> <small>از ۱۰۰ · امتیاز این هفته</small><div class="sb"><i style="width:'+score+'%"></i></div></div>',items:it}}
+function renderAi(){try{const a=analyze();$('ai').innerHTML='<div class="ai-h">'+a.h+'</div>'+a.items.map(x=>x[0]==='sec'?`<div class="ai-sec">${x[2]}</div>`:`<div class="ai-i ${x[0]}"><span>${x[1]}</span><span>${x[2]}</span></div>`).join('')}catch(e){$('ai').textContent='تحلیل در دسترس نیست.'}}
 function update(){
  const w=W(),c=weekCalc(w);
  c.t.forEach((x,i)=>{$('ds'+i).textContent=x.m?fmt(x.m):'';const tv=x.T??x.t;$('dt'+i).textContent=tv?fa(tv):''});
@@ -1221,6 +1261,7 @@ function renderRep(){
  x.fillStyle=lg(0,0,1080,340,[NH,M,P]);x.beginPath();x.moveTo(0,0);x.lineTo(1080,0);x.lineTo(1080,280);x.arcTo(1080,340,1020,340,60);x.lineTo(60,340);x.arcTo(0,340,0,280,60);x.closePath();x.fill();
  x.fillStyle='rgba(255,255,255,.12)';[[130,300,150],[960,40,130],[620,330,70],[420,30,50]].forEach(q=>{x.beginPath();x.arc(q[0],q[1],q[2],0,7);x.fill()});
  T('کارت گزارش هفته',1010,125,70,'#fff',800,'right');
+ if(String(stg.uname||'').trim())T('👤 '+String(stg.uname).trim(),70,125,42,'#fff',700,'left',440);
  const pill=(txt,py,bg,fg)=>{x.font='700 32px '+F;const wd=x.measureText(txt).width+60;rr(x,1010-wd,py,wd,58,29);x.fillStyle=bg;x.fill();T(txt,1010-30,py+40,32,fg,700,'right')};
  pill(jal(w.start)+'  تا  '+jal(addD(w.start,6)),165,'rgba(255,255,255,.22)','#fff');
  if(sk.cur>0)pill('🔥 '+fa(sk.cur)+' روز متوالی',240,'#fff',NH);
@@ -1287,6 +1328,7 @@ function renderRep(){
  let ft=en!=null&&en>=0?(en===0?'🎯 امروز روز '+(String(ex.n||'').trim()||'آزمون')+' است':'⏳ '+fa(en)+' روز تا '+(String(ex.n||'').trim()||'آزمون')):'';
  if(ft)T(ft,540,H-80,34,N,800,'center',900);
  x.globalAlpha=.55;T(String(stg.title||'برنامه مطالعه هفتگی'),540,H-(ft?36:60),23,N,400,'center',900);x.globalAlpha=1;
+ x.globalAlpha=.6;T('طراحی توسط امیرعلی ابراهیم‌پور',1050,H-18,21,N,400,'right',520);x.globalAlpha=1;
 }
 document.addEventListener('click',e=>{if(e.target&&e.target.id==='repDl'){try{renderRep();$('repC').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='weekly-report-'+W().start+'.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)})}catch(er){err('ساخت عکس ناموفق بود: '+er.message)}}});
 const _ex1=extra;extra=function(){_ex1();try{renderRep()}catch(e){}};
