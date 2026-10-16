@@ -640,7 +640,7 @@ body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,
 <div class="li"><b>👤 نام و نام خانوادگی</b> <input type="text" data-s="uname" maxlength="40" placeholder="مثلاً علی رضایی" style="max-width:220px"> <small>روی هدر، چاپ و کارت گزارش هفته نمایش داده می‌شود</small></div>
 <div class="li">عنوان <input type="text" data-s="title"> شعار <input type="text" data-s="slogan"></div>
 <div class="li">هدف <input type="text" data-s="goal"> </div>
-<div class="li" style="flex-wrap:wrap"><b>شمارش معکوس آزمون:</b> نام <input type="text" data-x="n" maxlength="40" placeholder="مثلاً کنکور" style="max-width:130px"> تاریخ آزمون <input type="date" data-x="d"> هدف کل تست <input type="text" data-num="1" data-x="t" min="0" max="100000" inputmode="numeric" placeholder="مثلاً ۵۰۰۰" style="width:90px"> شمارش از <input type="date" data-x="s"></div>
+<div class="li" style="flex-wrap:wrap"><b>شمارش معکوس آزمون:</b> نام <input type="text" data-x="n" maxlength="40" placeholder="مثلاً کنکور" style="max-width:130px"> تاریخ آزمون <input type="date" data-x="d"></div>
 <div class="li">درس‌ها (با ویرگول جدا کنید) <input type="text" data-s="subs"></div>
 <div class="li" style="display:block"><b>رنگ هر درس در نمودارها</b> <button type="button" id="colReset" class="scr">بازگشت به رنگ‌های پیش‌فرض</button><div id="subcol"></div></div>
 <div class="li"><label><input type="checkbox" data-sc="dna"> نمایش تزئینات</label> <label><input type="checkbox" data-sc="hdr"> نمایش هدر در چاپ</label> حاشیه چاپ (میلی‌متر) <input type="text" data-num="1" data-s="pm" inputmode="numeric" min="0" max="30" style="width:60px"></div>
@@ -1145,7 +1145,7 @@ function renderExam(){const el=$('hX');if(!el)return;const e=exam();
  if(!WKR.test(String(e.d||''))){el.className='exam noprint';el.textContent='';return}
  const n=dayDiff(today(),e.d),nm=String(e.n||'').trim()||'آزمون';let h;
  if(n>1)h='⏳ '+fa(n)+' روز تا '+nm;else if(n===1)h='⏳ فقط یک روز تا '+nm+' مانده';else if(n===0)h='🎯 امروز روز '+nm+' است؛ موفق باشی!';else h='✅ '+nm+' برگزار شد';
- const T=num(e.t);let sub=jal(e.d);
+ const T=0;let sub=jal(e.d);
  if(T>0&&n>0){const s0=WKR.test(String(e.s||''))?e.s:today();let done=0,td=0;
   allDays().forEach(x=>{const t=dayTot(x.d).t;if(x.iso>=s0)done+=t;if(x.iso===today())td+=t});
   const rem=Math.max(0,T-done);
