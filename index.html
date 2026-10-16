@@ -4,7 +4,8 @@
 <meta name="referrer" content="no-referrer">
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ژن پیشرفت</title></title>
+<script>try{var _d=localStorage.getItem('planner-dark-v1');if(_d===null)_d='0';if(_d==='1')document.documentElement.classList.add('dark')}catch(e){}</script>
+<title>برنامه مطالعه هفتگی</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{--n:#1b2a5c;--b:#2f80ed;--l:#eaf3ff;--p:#7c5cd6;--bd:#bcd6f7;box-sizing:border-box;color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -574,13 +575,16 @@ body #repCard.card{background:linear-gradient(135deg,var(--n) 0%,var(--hm,var(--
 #repCard .accHint{color:#fff;opacity:.9}
 #repCard canvas{border:0!important;box-shadow:0 18px 40px -14px rgba(0,0,0,.45)}
 #repCard button{background:#fff!important;color:var(--n)!important}
+@media screen{html.dark{filter:invert(.92) hue-rotate(180deg);background:#fff}html.dark img,html.dark canvas{filter:invert(1) hue-rotate(180deg)}}
+#weakCard .wk{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;margin-inline-start:6px}
+#weakCard .wk.r{background:#fde8e8;color:#b42318}#weakCard .wk.o{background:#fff3dc;color:#9a5b00}#weakCard .wk.g{background:#e3f6e8;color:#1a7a3c}
 </style></head>
 <body>
 <div class="wrap">
 <header><img class="hbanner" decoding="async" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="تصویر علوم زیستی و آزمایشگاهی"><div class="htxt"><h1 id="hT"></h1><small id="hS"></small><p class="mot">✨ قدم‌های کوچکِ امروز، قله‌ی بزرگِ فردا هستند؛ ادامه بده، تو از آنچه فکر می‌کنی به هدفت نزدیک‌تری. ✨</p><div class="exam noprint" id="hX"></div></div><div class="cr cr2"><span class="cr-l">طراحی توسط</span><span class="cr-n">امیرعلی ابراهیم‌پور</span></div><div class="goal" id="hG"></div></header>
 
 <div class="bar noprint">
-<select id="th" title="تم"></select><button id="bTh" class="g">🎨 مدیریت تم‌ها</button><select id="wk"></select>
+<select id="th" title="تم"></select><button id="bTh" class="g">🎨 مدیریت تم‌ها</button><button id="bDk" class="g" type="button">🌙 حالت تاریک</button><select id="wk"></select>
 <button id="bNew">هفته جدید</button>
 <button id="bCopy" class="s">کپی برنامه هفته قبل</button>
 <button id="bClr" class="g">پاک‌کردن هفته</button>
@@ -622,6 +626,7 @@ body #repCard.card{background:linear-gradient(135deg,var(--n) 0%,var(--hm,var(--
 <label class="tog noprint"><input type="checkbox" id="gS" data-g="skip"> تست‌هایی که «درست» نیستند، «نزده» حساب شوند (بدون نمره‌ی منفی)</label>
 <label class="tog noprint"><input type="checkbox" id="gN" data-g="neg"> نمره‌ی منفی (هر ۳ غلط، یک درست را کم می‌کند)</label>
 <div id="accOut"></div></div>
+<div class="card noprint" id="weakCard"><h3>درس‌های نیازمند توجه</h3><div id="weakOut"></div></div>
 </div>
 <div class="two">
 <div class="card"><h3>تعداد تست در هفته</h3><div id="c1"></div></div>
@@ -1195,48 +1200,112 @@ const rr=(c,x,y,w,h,r)=>{c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);
 function renderRep(){
  const cn=$('repC');if(!cn)return;
  const w=W(),c=weekCalc(w),a=accOf(w.days,negOn()),sk=streakInfo();
- const N=cv('--n'),B=cv('--b'),P=cv('--p'),M=cv('--hm')||P;
- cn.width=1080;cn.height=1350;const x=cn.getContext('2d'),F='Vazirmatn,Tahoma,sans-serif';x.direction='rtl';
+ const DK=document.documentElement.classList.contains('dark'),NH=cv('--n'),N=DK?'#e6ebff':NH,BG=DK?'#11162a':'#fff',CARD=DK?'#1c2340':'#fff',TR=DK?'#2c3560':'#e8ecf6',WK=DK?'#ff8a80':'#b42318',B=cv('--b'),P=cv('--p'),M=cv('--hm')||P;
+ const mp={};w.days.forEach(d=>d.rows.forEach(r=>{const m=mins(r);if(!m)return;const n=(r.s||'').trim()||'بدون درس';mp[n]=(mp[n]||0)+m}));
+ const neg=negOn(),ks=Object.keys(S.weeks).filter(k=>k<w.start).sort(),pk=ks.length?S.weeks[ks[ks.length-1]]:null,pc=pk?weekCalc(pk):null,pa=pk?accOf(pk.days,neg):null;
+ const stg=S.settings,gh=num(stg.gh),gt=num(stg.gt),gr=(gh?1:0)+(gt?1:0);
+ const subs=Object.entries(mp).sort((p,q)=>q[1]-p[1]).slice(0,4),tot=Object.values(mp).reduce((p,v)=>p+v,0);
+ const wkS=subAcc(w.days,neg).filter(q=>q.T>=5).sort((p,q)=>p.pct-q.pct)[0];
+ const ex=(S.settings&&S.settings.exam&&typeof S.settings.exam==='object'&&!Array.isArray(S.settings.exam))?S.settings.exam:{},en=/^\d{4}-\d{2}-\d{2}$/.test(String(ex.d||''))?Math.round((new Date(ex.d+'T12:00:00')-new Date(iso8(new Date())+'T12:00:00'))/864e5):null;
+ const secs=[];
+ if(pc&&(pc.M||pc.T))secs.push(250);
+ if(gr)secs.push(80+gr*105);
+ if(subs.length)secs.push(80+subs.length*85+(wkS?60:0));
+ const H=1945+secs.reduce((p,v)=>p+v+25,0)+130;
+ cn.width=1080;cn.height=H;const x=cn.getContext('2d'),F='Vazirmatn,Tahoma,sans-serif';x.direction='rtl';
  const T=(s,px,py,sz,col,wt,al,mw)=>{x.textAlign=al||'center';x.font=(wt||400)+' '+sz+'px '+F;x.fillStyle=col;mw?x.fillText(s,px,py,mw):x.fillText(s,px,py)};
  const lg=(x0,y0,x1,y1,cols)=>{const g=x.createLinearGradient(x0,y0,x1,y1);cols.forEach((k,i)=>g.addColorStop(i/(cols.length-1),k));return g};
  const sh=f=>{x.save();x.shadowColor='rgba(20,30,70,.16)';x.shadowBlur=26;x.shadowOffsetY=8;f();x.restore()};
- x.fillStyle='#fff';x.fillRect(0,0,1080,1350);
- x.globalAlpha=.12;x.fillStyle=lg(0,0,1080,1350,[B,P,M]);x.fillRect(0,0,1080,1350);x.globalAlpha=1;
- x.fillStyle=lg(0,0,1080,340,[N,M,P]);x.beginPath();x.moveTo(0,0);x.lineTo(1080,0);x.lineTo(1080,280);x.arcTo(1080,340,1020,340,60);x.lineTo(60,340);x.arcTo(0,340,0,280,60);x.closePath();x.fill();
+ x.fillStyle=BG;x.fillRect(0,0,1080,H);
+ x.globalAlpha=.12;x.fillStyle=lg(0,0,1080,H,[B,P,M]);x.fillRect(0,0,1080,H);x.globalAlpha=1;
+ x.fillStyle=lg(0,0,1080,340,[NH,M,P]);x.beginPath();x.moveTo(0,0);x.lineTo(1080,0);x.lineTo(1080,280);x.arcTo(1080,340,1020,340,60);x.lineTo(60,340);x.arcTo(0,340,0,280,60);x.closePath();x.fill();
  x.fillStyle='rgba(255,255,255,.12)';[[130,300,150],[960,40,130],[620,330,70],[420,30,50]].forEach(q=>{x.beginPath();x.arc(q[0],q[1],q[2],0,7);x.fill()});
  T('کارت گزارش هفته',1010,125,70,'#fff',800,'right');
  const pill=(txt,py,bg,fg)=>{x.font='700 32px '+F;const wd=x.measureText(txt).width+60;rr(x,1010-wd,py,wd,58,29);x.fillStyle=bg;x.fill();T(txt,1010-30,py+40,32,fg,700,'right')};
  pill(jal(w.start)+'  تا  '+jal(addD(w.start,6)),165,'rgba(255,255,255,.22)','#fff');
- if(sk.cur>0)pill('🔥 '+fa(sk.cur)+' روز متوالی',240,'#fff',N);
+ if(sk.cur>0)pill('🔥 '+fa(sk.cur)+' روز متوالی',240,'#fff',NH);
  const tile=(xl,y,wd,h,ic,lab,val,sub)=>{
-  sh(()=>{rr(x,xl,y,wd,h,30);x.fillStyle='#fff';x.fill()});
+  sh(()=>{rr(x,xl,y,wd,h,30);x.fillStyle=CARD;x.fill()});
   x.save();rr(x,xl,y,wd,h,30);x.clip();x.fillStyle=lg(xl,0,xl+wd,0,[B,P]);x.fillRect(xl,y,wd,10);x.restore();
   x.beginPath();x.arc(xl+wd-52,y+66,31,0,7);x.globalAlpha=.16;x.fillStyle=lg(xl,y,xl+wd,y+h,[B,P]);x.fill();x.globalAlpha=1;
   T(ic,xl+wd-52,y+78,34,'#000');
   T(lab,xl+wd-100,y+76,28,N,600,'right',wd-140);
   T(val,xl+wd/2,y+h-62,58,lg(xl,0,xl+wd,0,[B,P]),800,'center',wd-40);
   if(sub){x.globalAlpha=.75;T(sub,xl+wd/2,y+h-20,23,N,400,'center',wd-40);x.globalAlpha=1}};
- const hh=fa(Math.floor(c.M/60))+':'+fa(String(c.M%60).padStart(2,'0'));
+ const hh2=m=>fa(Math.floor(m/60))+':'+fa(String(m%60).padStart(2,'0')),hh=hh2(c.M);
  const act=w.days.filter(dayAct).length;
  tile(550,385,450,200,'⏱️','ساعت مطالعه',hh,'ساعت : دقیقه');
  tile(80,385,450,200,'📝','تعداد تست',fa(c.T),'تست');
  tile(550,610,450,200,'🎯','درصد تست‌ها',a.pct==null?'—':pf(a.pct)+'٪',a.T?fa(a.T)+' تست نمره‌گذاری‌شده':'ستون «درست» را پر کن');
  tile(80,610,450,200,'📅','روزهای فعال',fa(act)+' از ۷','');
- const mp={};w.days.forEach(d=>d.rows.forEach(r=>{const m=mins(r);if(!m)return;const n=(r.s||'').trim()||'بدون درس';mp[n]=(mp[n]||0)+m}));
  const top=Object.entries(mp).sort((p,q)=>q[1]-p[1])[0];
  tile(550,835,450,190,'🏆','پرمطالعه‌ترین روز',c.mm?c.dm:'—',c.mm?fmt(c.mm):'');
  tile(80,835,450,190,'📚','درس برتر هفته',top?top[0]:'—',top?fmt(top[1]):'');
- sh(()=>{rr(x,80,1050,920,225,32);x.fillStyle='#fff';x.fill()});
- T('مطالعه در هر روز',975,1092,28,N,700,'right');
- const base=1215,mh=85,slot=860/7,mx=Math.max(60,...c.t.map(q=>q.m));
+ const avg=act?Math.round(c.M/act):0,spd=c.M?Math.round(c.T/(c.M/60)*10)/10:null,nsub=Object.keys(mp).length;
+ tile(550,1050,450,190,'📆','میانگین روز فعال',act?hh2(avg):'—',act?'ساعت : دقیقه':'');
+ tile(80,1050,450,190,'⚡','سرعت تست',spd==null?'—':fa(spd).replace('.','٫'),'تست در هر ساعت');
+ tile(550,1265,450,190,'✅','تست درست',a.T?fa(a.C):'—',a.T?'از '+fa(a.T)+' تست نمره‌گذاری‌شده':'');
+ tile(80,1265,450,190,'❌','تست '+WL(),a.T?fa(a.Wr):'—',a.T?'از '+fa(a.T)+' تست نمره‌گذاری‌شده':'');
+ tile(550,1480,450,190,'📖','تعداد درس‌ها',fa(nsub),'درس مطالعه‌شده');
+ tile(80,1480,450,190,'🏅','رکورد متوالی',fa(sk.best),'روز (بهترین رشته)');
+ sh(()=>{rr(x,80,1695,920,225,32);x.fillStyle=CARD;x.fill()});
+ T('مطالعه در هر روز',975,1737,28,N,700,'right');
+ const base=1860,mh=85,slot=860/7,mx=Math.max(60,...c.t.map(q=>q.m));
  c.t.forEach((q,i)=>{const cx=970-(i+.5)*slot,h=Math.max(mh*q.m/mx,5);
   rr(x,cx-26,base-h,52,h,10);x.fillStyle=lg(0,base-h,0,base,[B,P]);x.fill();
   if(q.m)T(fa(Math.round(q.m/6)/10).replace('.','٫'),cx,base-h-9,21,N);
   T(D[i],cx,base+34,23,N)});
+ let y=1945;
+ const card=(h,title)=>{sh(()=>{rr(x,80,y,920,h,32);x.fillStyle=CARD;x.fill()});T(title,975,y+56,30,N,700,'right')};
+ const dl=(d,u,fm)=>d===0?['بدون تغییر','#7a869a']:[(d>0?'▲ ':'▼ ')+fm(Math.abs(d))+(u?' '+u:''),d>0?'#1a9a52':'#d64545'];
+ if(pc&&(pc.M||pc.T)){
+  card(250,'مقایسه با هفته‌ی قبل');
+  const cols=[['ساعت مطالعه',fa(Math.round(c.M/6)/10).replace('.','٫'),dl(c.M-pc.M,'ساعت',v=>fa(Math.round(v/6)/10).replace('.','٫'))],
+   ['تعداد تست',fa(c.T),dl(c.T-pc.T,'تست',fa)],
+   ['درصد تست',a.pct==null?'—':pf(a.pct)+'٪',a.pct==null||pa.pct==null?['—','#7a869a']:dl(Math.round((a.pct-pa.pct)*10)/10,'٪',pf)]];
+  cols.forEach((q,i)=>{const cx=850-i*310;T(q[0],cx,y+112,25,N,600);T(q[1],cx,y+172,52,lg(cx-100,0,cx+100,0,[B,P]),800,'center',270);T(q[2][0],cx,y+218,25,q[2][1],700,'center',280)});
+  y+=275}
+ if(gr){
+  card(80+gr*105,'پیشرفت اهداف هفته');let yy=y+105;
+  const pbar=(lab,cur,goal,sub)=>{const p=Math.round(cur/goal*100),wf=Math.max(0,Math.min(1,cur/goal))*860;
+   T(lab,975,yy,27,N,600,'right');T(fa(p)+'٪'+(p>=100?' ✅':''),105,yy,28,p>=100?'#1a9a52':N,800,'left');
+   rr(x,110,yy+16,860,24,12);x.fillStyle=TR;x.fill();
+   if(wf>0){rr(x,970-wf,yy+16,wf,24,12);x.fillStyle=lg(970-wf,0,970,0,[P,B]);x.fill()}
+   x.globalAlpha=.75;T(sub,975,yy+68,22,N,400,'right');x.globalAlpha=1;yy+=105};
+  if(gh)pbar('ساعت مطالعه',c.M,gh*60,fa(Math.round(c.M/6)/10).replace('.','٫')+' از '+fa(gh)+' ساعت');
+  if(gt)pbar('تعداد تست',c.T,gt,fa(c.T)+' از '+fa(gt)+' تست');
+  y+=80+gr*105+25}
+ if(subs.length){
+  card(80+subs.length*85+(wkS?60:0),'سهم درس‌ها از زمان مطالعه');let yy=y+104;
+  subs.forEach(q=>{const col=subC(q[0]);
+   x.beginPath();x.arc(962,yy-9,10,0,7);x.fillStyle=col;x.fill();
+   T(q[0],935,yy,27,N,600,'right',560);T(fmt(q[1]),105,yy,24,N,600,'left');
+   rr(x,110,yy+16,860,18,9);x.fillStyle=TR;x.fill();
+   const wf=Math.max(18,q[1]/tot*860);rr(x,970-wf,yy+16,wf,18,9);x.fillStyle=col;x.fill();yy+=85});
+  if(wkS)T('🎯 نیازمند توجه: '+wkS.n+' ('+pf(Math.max(0,wkS.pct))+'٪ درست)',975,yy+4,25,WK,700,'right',860);
+  y+=80+subs.length*85+(wkS?60:0)+25}
+ let ft=en!=null&&en>=0?(en===0?'🎯 امروز روز '+(String(ex.n||'').trim()||'آزمون')+' است':'⏳ '+fa(en)+' روز تا '+(String(ex.n||'').trim()||'آزمون')):'';
+ if(ft)T(ft,540,H-80,34,N,800,'center',900);
+ x.globalAlpha=.55;T(String(stg.title||'برنامه مطالعه هفتگی'),540,H-(ft?36:60),23,N,400,'center',900);x.globalAlpha=1;
 }
 document.addEventListener('click',e=>{if(e.target&&e.target.id==='repDl'){try{renderRep();$('repC').toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='weekly-report-'+W().start+'.png';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)})}catch(er){err('ساخت عکس ناموفق بود: '+er.message)}}});
 const _ex1=extra;extra=function(){_ex1();try{renderRep()}catch(e){}};
+/* ---- درس‌های نیازمند توجه ---- */
+function renderWeak(){const el=$('weakOut');if(!el)return;const neg=negOn(),MIN=10,end=addD(W().start,6),c1=addD(end,-28),c0=addD(end,-56),ad=allDays();
+ const per=(a,b)=>subAcc(ad.filter(x=>x.iso>a&&x.iso<=b).map(x=>x.d),neg).filter(x=>x.T>=MIN);
+ const cur=per(c1,end).sort((p,q)=>p.pct-q.pct),prv=new Map(per(c0,c1).map(x=>[nk(x.n),x]));
+ if(!cur.length){el.innerHTML='<div class="accHint">برای تحلیل، ستون «درست» را در چند هفته پر کن؛ حداقل '+fa(MIN)+' تست برای هر درس لازم است.</div>';return}
+ const lv=p=>p<50?['r','نیازمند توجه']:p<70?['o','متوسط']:['g','خوب'];
+ el.innerHTML=cur.slice(0,3).map((x,i)=>{const p=Math.max(0,x.pct),l=lv(p),o=prv.get(nk(x.n)),d=o?x.pct-o.pct:null;
+  const tr=d==null?'':Math.abs(d)<1?' · ➖ ثابت نسبت به ۴ هفته‌ی قبل':(d>0?' · 📈 ':' · 📉 ')+pf(Math.abs(d))+'٪ '+(d>0?'بهتر':'افت')+' نسبت به ۴ هفته‌ی قبل';
+  return `<div class="sh"><div class="sr"><span><i style="background:${subC(x.n)}"></i>${i===0?'🎯 ':''}${esc(x.n)}<span class="wk ${l[0]}">${l[1]}</span></span><b>${pf(p)}٪</b></div><div class="pbar"><i style="width:${Math.min(100,p)}%;background:${subC(x.n)}"></i></div><small>از ${fa(x.T)} تست در ۴ هفته‌ی اخیر${tr}</small></div>`}).join('')
+  +'<div class="accHint">پیشنهاد: اشتباهات «'+esc(cur[0].n)+'» را در دفترچه‌ی اشتباهات مرور کن و این هفته زمان بیشتری به آن بده.</div>'}
+const _ex2=extra;extra=function(){_ex2();try{renderWeak()}catch(e){}};
+try{renderWeak()}catch(e){}
+
+window.addEventListener('plannerdark',()=>{try{renderRep()}catch(e){}});
 try{renderRep();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{try{renderRep()}catch(e){}})}catch(e){}
 })();
 </script>
+<script>(function(){var K='planner-dark-v1',R=document.documentElement,b=document.getElementById('bDk');function lab(){if(b)b.textContent=R.classList.contains('dark')?'☀️ حالت روشن':'🌙 حالت تاریک'}lab();if(b)b.onclick=function(){var v=!R.classList.contains('dark');R.classList.toggle('dark',v);try{localStorage.setItem(K,v?'1':'0')}catch(e){}lab();try{window.dispatchEvent(new Event('plannerdark'))}catch(e){}}})();</script>
 </body></html>
