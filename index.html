@@ -581,6 +581,7 @@ body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,
 @media screen{html.dark #repCard.card{filter:invert(1) hue-rotate(180deg)}html.dark #repCard canvas{filter:none}}
 .uname{font-weight:700;font-size:13px;margin-top:3px}.uname:empty{display:none}
 .ai-sec{font-weight:800;font-size:13.5px;margin:14px 0 4px;padding-right:8px;border-right:4px solid var(--p)}.ai-score{margin-top:8px}.ai-score b{font-size:26px;color:var(--b)}.ai-score .sb{height:10px;background:#e8ecf6;border-radius:6px;overflow:hidden;margin-top:4px}.ai-score .sb i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--p))}
+.tmp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 4px}.tmp input[type=text]{flex:1;min-width:150px}.tmrp{display:flex;align-items:center;gap:4px;font-size:13px}#tmAl{position:fixed;inset:0;z-index:99999;background:rgba(10,14,35,.62);display:none;align-items:center;justify-content:center;padding:20px}#tmAl .tmAb{background:#fff;color:#1b2a6b;border-radius:22px;padding:22px 18px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}#tmAl .tmAh{font-size:54px}#tmAt{font-weight:800;font-size:17px;margin:8px 0 14px;line-height:1.7}#tmAl .tmAk{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 </style></head>
 <body>
 <div class="wrap">
@@ -603,6 +604,8 @@ body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,
 <div class="card noprint" id="tmCard"><h3>تایمر مطالعه</h3>
 <div class="tmr"><input type="text" id="tmS" list="dl" placeholder="درس را انتخاب یا تایپ کن" maxlength="80"><div class="tmt" id="tmT">۰۰:۰۰:۰۰</div></div>
 <div class="tmb"><button type="button" id="tmGo">▶ شروع</button><button type="button" id="tmPs" class="s">⏸ مکث</button><button type="button" id="tmDn" class="dn">✔ پایان و ثبت</button><button type="button" id="tmX" class="g">لغو</button></div>
+<div class="tmp"><label for="tmPl">⏰ هشدار بازه‌ای (دقیقه)</label><input type="text" id="tmPl" data-s="tmPlan" maxlength="60" placeholder="مثلاً ۵۰، ۶۰، ۹۰ یا ۱:۳۰"><label class="tmrp"><input type="checkbox" id="tmRp"> تکرار چرخه‌ای</label><button type="button" class="g" id="tmIcs">📅 آلارم گوشی (تقویم)</button></div>
+<div class="accHint">بازه‌ها را با ویرگول بنویس؛ هر بار که یک بازه تمام شود، صدا، لرزش و اعلان می‌گیری و تایمر ادامه پیدا می‌کند. «تکرار چرخه‌ای» بعد از آخرین بازه دوباره از اول شروع می‌کند. مرورگر بسته‌شده نمی‌تواند زنگ بزند؛ برای آن دکمه‌ی «آلارم گوشی» فایل تقویمی می‌سازد که روی خود گوشی زنگ می‌خورد.</div>
 <div class="accHint" id="tmM">با «پایان و ثبت»، زمان خودکار در ردیف همان درس در امروز نوشته می‌شود.</div></div>
 <div class="days" id="days"></div>
 
@@ -678,7 +681,7 @@ const jal=iso=>{const[y,m,d]=iso.split('-').map(Number);const j=g2j(y,m,d);retur
 const lastSat=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return d.toISOString().slice(0,10)};
 
 const KEY='genetics-planner-v2';
-const defS={uname:'',title:'برنامه مطالعه هفتگی',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8,cols:{}};
+const defS={tmPlan:'',tmRep:false,uname:'',title:'برنامه مطالعه هفتگی',slogan:'امروز، قدمی کوچک به سوی آینده‌ای بزرگ‌تر است',goal:'هدف: قبولی در دانشگاه تهران',color:'#1a73b8',subs:'بیوشیمی عمومی,بیوشیمی,زیست‌شناسی سلولی و مولکولی,ژنتیک,شیمی آلی و عمومی,میکروب‌شناسی,باکتری‌شناسی,قارچ‌شناسی,ویروس‌شناسی,انگل‌شناسی,ایمنی‌شناسی,هماتولوژی,زبان عمومی',dna:true,hdr:true,pm:8,cols:{}};
 const lst=(n,names)=>Array.from({length:n},(_,i)=>({t:names?names[i]||'':'',d:false}));
 const ROWS=9;
 function padRows(){try{Object.values(S.weeks).forEach(w=>w&&Array.isArray(w.days)&&w.days.forEach(d=>{if(!d||!Array.isArray(d.rows))return;while(d.rows.length<ROWS)d.rows.push({s:'',h:'',m:'',t:'',n:''})}))}catch(e){}}
@@ -1135,14 +1138,14 @@ document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.x==
 
 /* ===== 3) Study timer ===== */
 let TM={s:'',acc:0,run:0,on:false};
-function tmLoad(){try{const x=JSON.parse(localStorage.getItem(TK)||'null',SAFE);if(x&&typeof x==='object')TM={s:String(x.s||'').slice(0,80),acc:Math.max(0,+x.acc||0),run:+x.run>0?+x.run:0,on:!!x.on}}catch(e){}}
+function tmLoad(){try{const x=JSON.parse(localStorage.getItem(TK)||'null',SAFE);if(x&&typeof x==='object')TM={s:String(x.s||'').slice(0,80),acc:Math.max(0,+x.acc||0),run:+x.run>0?+x.run:0,on:!!x.on,al:Math.max(0,+x.al||0)}}catch(e){}}
 function tmSave(){try{localStorage.setItem(TK,JSON.stringify(TM))}catch(e){}}
 const tmEl=()=>TM.acc+(TM.run?Math.max(0,Date.now()-TM.run):0);
 const fmtT=ms=>{const s=Math.floor(Math.max(0,ms)/1000),p=n=>String(n).padStart(2,'0');return fa(p(Math.floor(s/3600))+':'+p(Math.floor(s%3600/60))+':'+p(s%60))};
 const tmMsg=t=>{$('tmM').textContent=t};
 function tmUI(){const run=!!TM.run,on=!!TM.on;
  $('tmT').textContent=fmtT(tmEl());
- $('tmS').disabled=on;if(on)$('tmS').value=TM.s;
+ $('tmRp').checked=!!S.settings.tmRep;$('tmS').disabled=on;if(on)$('tmS').value=TM.s;
  $('tmGo').disabled=run;$('tmGo').textContent=on?'▶ ادامه':'▶ شروع';
  $('tmPs').disabled=!run;$('tmDn').disabled=!on;$('tmX').disabled=!on}
 function addStudy(sub,min){
@@ -1156,16 +1159,44 @@ function addStudy(sub,min){
  const t=mins(r)+min;r.s=r.s&&nk(r.s)===k?r.s:sub;r.h=Math.floor(t/60)+':'+String(t%60).padStart(2,'0');r.m='';
  S.cur=w.start;save();build()}
 $('tmGo').onclick=()=>{
- if(!TM.on){const s=$('tmS').value.trim().slice(0,80);if(!s){tmMsg('اول درس را انتخاب یا تایپ کن.');$('tmS').focus();return}TM={s,acc:0,run:Date.now(),on:true}}
+ if(!TM.on){const s=$('tmS').value.trim().slice(0,80);if(!s){tmMsg('اول درس را انتخاب یا تایپ کن.');$('tmS').focus();return}TM={s,acc:0,run:Date.now(),on:true,al:0}}
  else if(!TM.run)TM.run=Date.now();
- tmSave();tmUI();tmMsg('تایمر روشن است؛ می‌توانی صفحه را ببندی، زمان ادامه پیدا می‌کند.')};
+ try{if(tmPlan().length){if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();tmCtx=tmCtx||new(window.AudioContext||window.webkitAudioContext)();tmCtx.resume()}}catch(e){}
+  tmSave();tmUI();tmMsg('تایمر روشن است؛ می‌توانی صفحه را ببندی، زمان ادامه پیدا می‌کند.'+(tmPlan().length?' هشدار بازه‌ای فعال است (برای زنگ‌خوردن با مرورگر بسته، «آلارم گوشی» را بزن).':''))};
 $('tmPs').onclick=()=>{if(!TM.run)return;TM.acc=tmEl();TM.run=0;tmSave();tmUI();tmMsg('مکث شد. با «ادامه» دوباره شروع کن.')};
 $('tmDn').onclick=()=>{if(!TM.on)return;const ms=tmEl(),sub=TM.s,min=Math.round(ms/60000);
  TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();$('tmT').textContent=fmtT(0);
  if(min<1){tmMsg('زمان کمتر از یک دقیقه بود و ثبت نشد.');return}
  addStudy(sub,min);tmMsg('✅ '+fa(min)+' دقیقه برای «'+sub+'» در ردیف امروز ثبت شد.')};
 $('tmX').onclick=()=>{if(!TM.on)return;if(!confirm('تایمر لغو شود و این زمان ثبت نشود؟'))return;TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();$('tmT').textContent=fmtT(0);tmMsg('تایمر لغو شد.')};
-setInterval(()=>{if(TM.run)$('tmT').textContent=fmtT(tmEl())},1000);
+setInterval(()=>{if(TM.run){$('tmT').textContent=fmtT(tmEl());tmCheck()}},1000);
+/* ----- هشدار بازه‌ای ----- */
+const TT0=document.title;let tmCtx=null,tmBeepT=0;
+const pDig=s=>String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+function tmPlan(){const out=[];pDig(S.settings.tmPlan||'').split(/[\s,،;؛]+/).forEach(t=>{if(!t)return;let m=0;const c=t.match(/^(\d{1,2}):(\d{1,2})$/);if(c)m=+c[1]*60+ +c[2];else if(/^\d+(\.\d+)?$/.test(t))m=Math.round(parseFloat(t));if(m>=1&&m<=720&&out.length<12)out.push(m)});return out}
+const tmThr=(k,p,rep)=>{if(!p.length||(!rep&&k>=p.length))return Infinity;let s=0;for(let i=0;i<=k;i++)s+=p[i%p.length];return s*60000};
+function tmBeep(){try{tmCtx=tmCtx||new(window.AudioContext||window.webkitAudioContext)();if(tmCtx.state==='suspended')tmCtx.resume();[0,.35,.7].forEach(d=>{const o=tmCtx.createOscillator(),g=tmCtx.createGain(),t=tmCtx.currentTime+d;o.frequency.value=880;o.connect(g);g.connect(tmCtx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.28);o.start(t);o.stop(t+.3)})}catch(e){}}
+function tmAlOff(){clearInterval(tmBeepT);const o=$('tmAl');if(o)o.style.display='none';document.title=TT0}
+function tmAlarm(len,n){const msg='بازه‌ی '+fa(len)+' دقیقه‌ای «'+(TM.s||'مطالعه')+'» تموم شد (هشدار '+fa(n)+')';tmMsg('⏰ '+msg);
+ try{if(navigator.vibrate)navigator.vibrate([400,150,400,150,800])}catch(e){}
+ try{if('Notification' in window&&Notification.permission==='granted')new Notification('⏰ هشدار تایمر مطالعه',{body:msg,tag:'tm-al',requireInteraction:true})}catch(e){}
+ let o=$('tmAl');if(!o){o=document.createElement('div');o.id='tmAl';o.innerHTML='<div class="tmAb"><div class="tmAh">⏰</div><div id="tmAt"></div><div class="tmAk"><button type="button" id="tmAc">▶ ادامه می‌دم</button><button type="button" class="s" id="tmAp">⏸ مکث</button><button type="button" class="dn" id="tmAd">✔ پایان و ثبت</button></div></div>';document.body.appendChild(o);
+  $('tmAc').onclick=tmAlOff;$('tmAp').onclick=()=>{tmAlOff();$('tmPs').click()};$('tmAd').onclick=()=>{tmAlOff();$('tmDn').click()}}
+ $('tmAt').textContent=msg;o.style.display='flex';tmBeep();clearInterval(tmBeepT);let c=0;tmBeepT=setInterval(()=>{if(++c>12)return clearInterval(tmBeepT);tmBeep()},4000);document.title='⏰ '+msg}
+function tmCheck(){if(!TM.run)return;const p=tmPlan();if(!p.length)return;const rep=!!S.settings.tmRep,el=tmEl();let n=0;while(n<500&&tmThr(n,p,rep)<=el)n++;
+ const al=+TM.al||0;if(n<al){TM.al=n;tmSave();return}if(n>al){TM.al=n;tmSave();tmAlarm(p[(n-1)%p.length],n)}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tmCheck()});setTimeout(tmCheck,800);
+$('tmRp').onchange=e=>{S.settings.tmRep=e.target.checked;save()};
+const icsT=s=>String(s).replace(/[\\;,]/g,'\\$&').replace(/\n/g,'\\n');
+$('tmIcs').onclick=()=>{const p=tmPlan();if(!p.length){tmMsg('اول بازه‌ها را بنویس؛ مثلاً ۵۰، ۶۰، ۹۰.');$('tmPl').focus();return}
+ const rep=!!S.settings.tmRep,el=TM.on?tmEl():0,sub=(TM.on?TM.s:$('tmS').value.trim())||'مطالعه',now=Date.now(),ev=[],z=ms=>new Date(ms).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+ let k=TM.on?(+TM.al||0):0;
+ for(let i=0;i<12;i++,k++){const th=tmThr(k,p,rep);if(!isFinite(th))break;const at=now+(th-el);if(at<=now+5000)continue;
+  ev.push(['BEGIN:VEVENT','UID:tm'+now+'-'+k+'@planner','DTSTAMP:'+z(now),'DTSTART:'+z(at),'DTEND:'+z(at+300000),'SUMMARY:'+icsT('⏰ پایان بازه‌ی '+fa(p[k%p.length])+' دقیقه‌ای - '+sub),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsT('بازه‌ی مطالعه تمام شد'),'TRIGGER:PT0S','END:VALARM','END:VEVENT'].join('\r\n'))}
+ if(!ev.length){tmMsg('بازه‌ی بعدی پیدا نشد؛ «تکرار چرخه‌ای» را روشن کن یا بازه‌ی جدید بنویس.');return}
+ const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//planner//FA','CALSCALE:GREGORIAN'].concat(ev,'END:VCALENDAR').join('\r\n'),a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar;charset=utf-8'}));a.download='study-alarms.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+ tmMsg('📅 فایل '+fa(ev.length)+' آلارم ساخته شد. بازش کن و به تقویم گوشی اضافه کن؛ این آلارم‌ها حتی با بسته‌بودن مرورگر زنگ می‌خورند. اگر تایمر را مکث یا لغو کردی، آلارم‌های باقی‌مانده را از تقویم پاک کن.'+(TM.on&&!TM.run?' (چون تایمر مکث است، زمان‌ها از همین حالا حساب شدند.)':''))};
 
 /* ===== 4) Mistakes notebook ===== */
 function renderMist(){const el=$('mOut');if(!el)return;
