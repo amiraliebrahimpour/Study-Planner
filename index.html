@@ -5,7 +5,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>try{var _d=localStorage.getItem('planner-dark-v1');if(_d===null)_d='0';if(_d==='1')document.documentElement.classList.add('dark')}catch(e){}</script>
-<title>ژن پیشرفت</title>
+<title>ژن پیشرفت </title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{--n:#1b2a5c;--b:#2f80ed;--l:#eaf3ff;--p:#7c5cd6;--bd:#bcd6f7;box-sizing:border-box;color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -581,7 +581,19 @@ body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,
 @media screen{html.dark #repCard.card{filter:invert(1) hue-rotate(180deg)}html.dark #repCard canvas{filter:none}}
 .uname{font-weight:700;font-size:13px;margin-top:3px}.uname:empty{display:none}
 .ai-sec{font-weight:800;font-size:13.5px;margin:14px 0 4px;padding-right:8px;border-right:4px solid var(--p)}.ai-score{margin-top:8px}.ai-score b{font-size:26px;color:var(--b)}.ai-score .sb{height:10px;background:#e8ecf6;border-radius:6px;overflow:hidden;margin-top:4px}.ai-score .sb i{display:block;height:100%;background:linear-gradient(90deg,var(--b),var(--p))}
-.tmp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 4px}.tmp input[type=text]{flex:1;min-width:150px}.tmrp{display:flex;align-items:center;gap:4px;font-size:13px}#tmAl{position:fixed;inset:0;z-index:99999;background:rgba(10,14,35,.62);display:none;align-items:center;justify-content:center;padding:20px}#tmAl .tmAb{background:#fff;color:#1b2a6b;border-radius:22px;padding:22px 18px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}#tmAl .tmAh{font-size:54px}#tmAt{font-weight:800;font-size:17px;margin:8px 0 14px;line-height:1.7}#tmAl .tmAk{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+#tmCard .tmIntro{font-size:13px;line-height:1.9;margin:2px 0 8px;padding:8px 10px;border-radius:10px;background:var(--l,#eef5fc)}
+#tmCard .tmStep{display:flex;gap:8px;align-items:flex-start;margin-top:10px}
+#tmCard .tmN{flex:none;width:24px;height:24px;border-radius:50%;background:var(--b);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;margin-top:1px}
+#tmCard .tmBody{flex:1;min-width:0}
+#tmCard .tmch{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-size:12px}
+#tmCard .tmch button{padding:4px 10px;box-shadow:none}
+#tmCard .tmHelp{display:block;opacity:.8;margin-top:6px;line-height:1.8}
+#tmCard .tmNx{margin-top:8px;font-size:13px;font-weight:700;color:var(--n)}
+#tmCard .tmSw{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}#tmCard .tmSw button{flex:1;min-width:120px;box-shadow:none}#tmCard .tmSw button.on{background:var(--b)!important;color:#fff!important}#tmCard .tmCal{align-items:flex-start;margin-top:8px;padding:8px;border-radius:10px;background:var(--l,#eef5fc);line-height:1.8}#tmCard .tmCal input{margin-top:6px}
+#tmCard .tmWhen{margin-top:12px;padding:8px 10px;border:1.5px solid var(--bd);border-radius:12px;font-size:12.5px;line-height:1.9;background:#fafcff}#tmCard .tmWhen summary{cursor:pointer}#tmCard .tmWhen p{margin:8px 0}
+#tmCard .tmRow{display:flex;gap:8px;margin:6px 0}#tmCard .tmRow>span{font-size:20px;flex:none}
+#tmCard .tmWhen>button{margin-top:6px;width:100%}
+.tmp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 4px}.tmp input[type=text]{flex:1;min-width:150px}.tmrp{display:flex;align-items:center;gap:4px;font-size:13px}#tmAl{position:fixed;inset:0;z-index:99999;background:rgba(10,14,35,.62);display:none;align-items:center;justify-content:center;padding:20px}#tmAl .tmAb{background:#fff;color:#1b2a6b;border-radius:22px;padding:22px 18px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}#tmAl .tmAh{font-size:54px}#tmAt{font-weight:800;font-size:17px;margin:8px 0 14px;line-height:1.7}#tmAl .tmAk{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 </style></head>
 <body>
 <div class="wrap">
@@ -602,10 +614,22 @@ body #repCard.card{background:radial-gradient(circle at 12% 8%,rgba(255,255,255,
 <div class="thp noprint" id="thp"><div class="thh"><b>مدیریت تم‌ها</b><button id="thAdd" class="s">+ افزودن تم جدید</button></div><div id="thl"></div><small>نام همه‌ی تم‌ها قابل تغییر است. برای تم‌های خودت می‌توانی ایموجی و دو رنگ اصلی و ثانویه را هم انتخاب کنی.</small></div>
 
 <div class="card noprint" id="tmCard"><h3>تایمر مطالعه</h3>
-<div class="tmr"><input type="text" id="tmS" list="dl" placeholder="درس را انتخاب یا تایپ کن" maxlength="80"><div class="tmt" id="tmT">۰۰:۰۰:۰۰</div></div>
+<div class="tmIntro">زمان مطالعه‌ات را اندازه می‌گیرد، هر وقت یک بازه تمام شد <b>زنگ می‌زند</b>، و آخرش خودکار در جدول امروز <b>ثبت می‌کند</b>.</div>
+<div class="tmStep"><span class="tmN">۱</span><div class="tmBody"><label for="tmS"><b>چه درسی می‌خوانی؟</b></label>
+<div class="tmr"><input type="text" id="tmS" list="dl" placeholder="درس را انتخاب یا تایپ کن" maxlength="80"><div class="tmt" id="tmT">۰۰:۰۰:۰۰</div></div></div></div>
+<div class="tmStep"><span class="tmN">۲</span><div class="tmBody"><b>زنگ می‌خواهی یا نه؟</b>
+<div class="tmSw"><button type="button" class="g" id="tmOn">🔔 با زنگ</button><button type="button" class="g" id="tmOff">🔕 بدون زنگ (فقط زمان‌سنج)</button></div>
+<div id="tmAlBox"><label for="tmPl"><b>هر چند دقیقه یک بار زنگ بزند؟</b></label>
+<div class="tmp"><input type="text" id="tmPl" data-s="tmPlan" maxlength="6" inputmode="numeric" placeholder="مثلاً ۹۰ (یک ساعت و نیم)"><span>دقیقه</span></div>
+<label class="tmrp tmCal"><input type="checkbox" id="tmCalChk"> <span><b>حتی اگر مرورگر بسته بود یا گوشی قفل بود، زنگ بزند</b></span></label></div></div></div>
+<div class="tmStep"><span class="tmN">۳</span><div class="tmBody"><b>شروع کن</b>
 <div class="tmb"><button type="button" id="tmGo">▶ شروع</button><button type="button" id="tmPs" class="s">⏸ مکث</button><button type="button" id="tmDn" class="dn">✔ پایان و ثبت</button><button type="button" id="tmX" class="g">لغو</button></div>
-<div class="tmp"><label for="tmPl">⏰ هشدار بازه‌ای (دقیقه)</label><input type="text" id="tmPl" data-s="tmPlan" maxlength="60" placeholder="مثلاً ۵۰، ۶۰، ۹۰ یا ۱:۳۰"><label class="tmrp"><input type="checkbox" id="tmRp"> تکرار چرخه‌ای</label><button type="button" class="g" id="tmIcs">📅 آلارم گوشی (تقویم)</button></div>
-<div class="accHint">بازه‌ها را با ویرگول بنویس؛ هر بار که یک بازه تمام شود، صدا، لرزش و اعلان می‌گیری و تایمر ادامه پیدا می‌کند. «تکرار چرخه‌ای» بعد از آخرین بازه دوباره از اول شروع می‌کند. مرورگر بسته‌شده نمی‌تواند زنگ بزند؛ برای آن دکمه‌ی «آلارم گوشی» فایل تقویمی می‌سازد که روی خود گوشی زنگ می‌خورد.</div>
+<div class="tmNx" id="tmNx"></div></div></div>
+<details class="tmWhen"><summary><b>ℹ️ توضیحات تکمیلی</b></summary>
+<p>🔔 <b>صفحه باز است:</b> زنگ، لرزش و اعلان می‌گیری؛ اینترنت لازم نیست.</p>
+<p>😴 <b>لپ‌تاپ خوابیده:</b> در خواب هیچ برنامه‌ای زنگ نمی‌زند، ولی به‌محض بیدار شدن، اگر زمانش گذشته باشد همان لحظه زنگ می‌خورد.</p>
+<p>📱 <b>مرورگر بسته یا گوشی قفل:</b> تیک «حتی اگر مرورگر بسته بود…» را روشن بگذار. با زدن «شروع»، فایل آلارم تقویم دانلود می‌شود؛ بازش کن و «افزودن» را بزن تا خودِ گوشی زنگ بزند. اگر تایمر را مکث یا لغو کردی، آلارم‌های باقی‌مانده را از تقویم پاک کن.</p>
+<button type="button" class="g" id="tmIcs">📅 ساخت دوباره‌ی فایل آلارم تقویم</button></details>
 <div class="accHint" id="tmM">با «پایان و ثبت»، زمان خودکار در ردیف همان درس در امروز نوشته می‌شود.</div></div>
 <div class="days" id="days"></div>
 
@@ -1145,8 +1169,9 @@ const fmtT=ms=>{const s=Math.floor(Math.max(0,ms)/1000),p=n=>String(n).padStart(
 const tmMsg=t=>{$('tmM').textContent=t};
 function tmUI(){const run=!!TM.run,on=!!TM.on;
  $('tmT').textContent=fmtT(tmEl());
- $('tmRp').checked=!!S.settings.tmRep;$('tmS').disabled=on;if(on)$('tmS').value=TM.s;
- $('tmGo').disabled=run;$('tmGo').textContent=on?'▶ ادامه':'▶ شروع';
+ $('tmS').disabled=on;if(on)$('tmS').value=TM.s;
+ $('tmGo').disabled=run;$('tmGo').textContent=on?'▶ ادامه':'▶ شروع';try{tmNext()}catch(e){}
+ {const a=S.settings.tmAlOn!==false;$('tmOn').classList.toggle('on',a);$('tmOff').classList.toggle('on',!a);$('tmAlBox').style.display=a?'':'none';$('tmCalChk').checked=S.settings.tmCal!==false}
  $('tmPs').disabled=!run;$('tmDn').disabled=!on;$('tmX').disabled=!on}
 function addStudy(sub,min){
  const td=today();
@@ -1162,18 +1187,30 @@ $('tmGo').onclick=()=>{
  if(!TM.on){const s=$('tmS').value.trim().slice(0,80);if(!s){tmMsg('اول درس را انتخاب یا تایپ کن.');$('tmS').focus();return}TM={s,acc:0,run:Date.now(),on:true,al:0}}
  else if(!TM.run)TM.run=Date.now();
  try{if(tmPlan().length){if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();tmCtx=tmCtx||new(window.AudioContext||window.webkitAudioContext)();tmCtx.resume()}}catch(e){}
-  tmSave();tmUI();tmMsg('تایمر روشن است؛ می‌توانی صفحه را ببندی، زمان ادامه پیدا می‌کند.'+(tmPlan().length?' هشدار بازه‌ای فعال است (برای زنگ‌خوردن با مرورگر بسته، «آلارم گوشی» را بزن).':''))};
-$('tmPs').onclick=()=>{if(!TM.run)return;TM.acc=tmEl();TM.run=0;tmSave();tmUI();tmMsg('مکث شد. با «ادامه» دوباره شروع کن.')};
+  tmSave();tmUI();tmWake();tmNext();if(tmPlan().length&&S.settings.tmCal!==false)setTimeout(()=>$('tmIcs').click(),0);tmMsg('تایمر روشن است. '+(tmPlan().length?(S.settings.tmCal!==false?'فایل آلارم تقویم هم دانلود شد؛ بازش کن و اضافه کن تا با بسته بودن مرورگر هم زنگ بزند.':'زنگ فعال است؛ صفحه را باز نگه دار.'):''))};
+$('tmPs').onclick=()=>{if(!TM.run)return;TM.acc=tmEl();TM.run=0;tmSave();tmUI();tmWake();tmNext();tmMsg('مکث شد. با «ادامه» دوباره شروع کن.')};
 $('tmDn').onclick=()=>{if(!TM.on)return;const ms=tmEl(),sub=TM.s,min=Math.round(ms/60000);
- TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();$('tmT').textContent=fmtT(0);
+ TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();tmWake();tmNext();$('tmT').textContent=fmtT(0);
  if(min<1){tmMsg('زمان کمتر از یک دقیقه بود و ثبت نشد.');return}
  addStudy(sub,min);tmMsg('✅ '+fa(min)+' دقیقه برای «'+sub+'» در ردیف امروز ثبت شد.')};
-$('tmX').onclick=()=>{if(!TM.on)return;if(!confirm('تایمر لغو شود و این زمان ثبت نشود؟'))return;TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();$('tmT').textContent=fmtT(0);tmMsg('تایمر لغو شد.')};
-setInterval(()=>{if(TM.run){$('tmT').textContent=fmtT(tmEl());tmCheck()}},1000);
+$('tmX').onclick=()=>{if(!TM.on)return;if(!confirm('تایمر لغو شود و این زمان ثبت نشود؟'))return;TM={s:'',acc:0,run:0,on:false};tmSave();tmUI();tmWake();tmNext();$('tmT').textContent=fmtT(0);tmMsg('تایمر لغو شد.')};
+function tmTick(){if(TM.run){$('tmT').textContent=fmtT(tmEl());tmCheck()}tmNext()}
+setInterval(tmTick,1000);
+/* تایمر در Worker: کمتر از تب پس‌زمینه کند می‌شود */
+try{const w=new Worker(URL.createObjectURL(new Blob(['setInterval(()=>postMessage(1),1000)'])));w.onmessage=()=>{if(TM.run)tmCheck()}}catch(e){}
+/* جلوگیری از خاموش‌شدن صفحه هنگام اجرای تایمر */
+let tmWL=null;async function tmWake(){try{if(TM.run&&'wakeLock' in navigator&&!tmWL){tmWL=await navigator.wakeLock.request('screen');tmWL.addEventListener('release',()=>{tmWL=null})}else if(!TM.run&&tmWL){tmWL.release();tmWL=null}}catch(e){tmWL=null}}
+function tmNext(){const o=$('tmNx');if(!o)return;const p=tmPlan();if(S.settings.tmAlOn===false){o.textContent='🔕 بدون زنگ؛ فقط زمان‌سنجی و ثبت.';return}
+ if(!TM.on){o.textContent=p.length?'زنگ اول: '+fa(p[0])+' دقیقه بعد از شروع.':'بدون بازه‌ی زنگ؛ فقط زمان‌سنجی می‌شود.';return}
+ if(!p.length){o.textContent='⏱ در حال زمان‌سنجی (بدون زنگ).';return}
+ const rep=true,k=Math.max(+TM.al||0,0),th=tmThr(k,p,rep);
+ if(!isFinite(th)){o.textContent='همه‌ی بازه‌ها تمام شد. «تکرار» را روشن کن تا ادامه پیدا کند.';return}
+ const left=Math.max(0,th-tmEl()),m=Math.ceil(left/60000);
+ o.textContent=(TM.run?'⏰ زنگ بعدی تا ':'⏸ مکث؛ زنگ بعدی بعد از ادامه، تا ')+fa(m)+' دقیقه‌ی دیگر'}
 /* ----- هشدار بازه‌ای ----- */
 const TT0=document.title;let tmCtx=null,tmBeepT=0;
 const pDig=s=>String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
-function tmPlan(){const out=[];pDig(S.settings.tmPlan||'').split(/[\s,،;؛]+/).forEach(t=>{if(!t)return;let m=0;const c=t.match(/^(\d{1,2}):(\d{1,2})$/);if(c)m=+c[1]*60+ +c[2];else if(/^\d+(\.\d+)?$/.test(t))m=Math.round(parseFloat(t));if(m>=1&&m<=720&&out.length<12)out.push(m)});return out}
+function tmPlan(){const out=[];if(S.settings.tmAlOn===false)return out;pDig(S.settings.tmPlan||'').split(/[\s,،;؛]+/).forEach(t=>{if(!t)return;let m=0;const c=t.match(/^(\d{1,2}):(\d{1,2})$/);if(c)m=+c[1]*60+ +c[2];else if(/^\d+(\.\d+)?$/.test(t))m=Math.round(parseFloat(t));if(m>=1&&m<=720&&out.length<1)out.push(m)});return out}
 const tmThr=(k,p,rep)=>{if(!p.length||(!rep&&k>=p.length))return Infinity;let s=0;for(let i=0;i<=k;i++)s+=p[i%p.length];return s*60000};
 function tmBeep(){try{tmCtx=tmCtx||new(window.AudioContext||window.webkitAudioContext)();if(tmCtx.state==='suspended')tmCtx.resume();[0,.35,.7].forEach(d=>{const o=tmCtx.createOscillator(),g=tmCtx.createGain(),t=tmCtx.currentTime+d;o.frequency.value=880;o.connect(g);g.connect(tmCtx.destination);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.4,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.28);o.start(t);o.stop(t+.3)})}catch(e){}}
 function tmAlOff(){clearInterval(tmBeepT);const o=$('tmAl');if(o)o.style.display='none';document.title=TT0}
@@ -1183,20 +1220,25 @@ function tmAlarm(len,n){const msg='بازه‌ی '+fa(len)+' دقیقه‌ای �
  let o=$('tmAl');if(!o){o=document.createElement('div');o.id='tmAl';o.innerHTML='<div class="tmAb"><div class="tmAh">⏰</div><div id="tmAt"></div><div class="tmAk"><button type="button" id="tmAc">▶ ادامه می‌دم</button><button type="button" class="s" id="tmAp">⏸ مکث</button><button type="button" class="dn" id="tmAd">✔ پایان و ثبت</button></div></div>';document.body.appendChild(o);
   $('tmAc').onclick=tmAlOff;$('tmAp').onclick=()=>{tmAlOff();$('tmPs').click()};$('tmAd').onclick=()=>{tmAlOff();$('tmDn').click()}}
  $('tmAt').textContent=msg;o.style.display='flex';tmBeep();clearInterval(tmBeepT);let c=0;tmBeepT=setInterval(()=>{if(++c>12)return clearInterval(tmBeepT);tmBeep()},4000);document.title='⏰ '+msg}
-function tmCheck(){if(!TM.run)return;const p=tmPlan();if(!p.length)return;const rep=!!S.settings.tmRep,el=tmEl();let n=0;while(n<500&&tmThr(n,p,rep)<=el)n++;
+function tmCheck(){if(!TM.run)return;const p=tmPlan();if(!p.length)return;const rep=true,el=tmEl();let n=0;while(n<500&&tmThr(n,p,rep)<=el)n++;
  const al=+TM.al||0;if(n<al){TM.al=n;tmSave();return}if(n>al){TM.al=n;tmSave();tmAlarm(p[(n-1)%p.length],n)}}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)tmCheck()});setTimeout(tmCheck,800);
-$('tmRp').onchange=e=>{S.settings.tmRep=e.target.checked;save()};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){tmCheck();tmWake();tmNext()}});['focus','pageshow','online'].forEach(ev=>addEventListener(ev,()=>{tmCheck();tmWake()}));document.addEventListener('pointerdown',()=>{try{if(tmCtx&&tmCtx.state==='suspended')tmCtx.resume()}catch(e){}},{passive:true});setTimeout(()=>{tmCheck();tmWake();tmNext()},800);
+/* انتخاب سریع بازه */
+$('tmPl').addEventListener('input',()=>setTimeout(tmNext,0));
+
+$('tmOn').onclick=()=>{S.settings.tmAlOn=true;save();tmUI();tmNext()};
+$('tmOff').onclick=()=>{S.settings.tmAlOn=false;save();tmAlOff();tmUI();tmNext();tmMsg('بدون زنگ: فقط زمان‌سنجی می‌شود.')};
+$('tmCalChk').onchange=e=>{S.settings.tmCal=e.target.checked;save()};
 const icsT=s=>String(s).replace(/[\\;,]/g,'\\$&').replace(/\n/g,'\\n');
 $('tmIcs').onclick=()=>{const p=tmPlan();if(!p.length){tmMsg('اول بازه‌ها را بنویس؛ مثلاً ۵۰، ۶۰، ۹۰.');$('tmPl').focus();return}
- const rep=!!S.settings.tmRep,el=TM.on?tmEl():0,sub=(TM.on?TM.s:$('tmS').value.trim())||'مطالعه',now=Date.now(),ev=[],z=ms=>new Date(ms).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+ const rep=true,el=TM.on?tmEl():0,sub=(TM.on?TM.s:$('tmS').value.trim())||'مطالعه',now=Date.now(),ev=[],z=ms=>new Date(ms).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
  let k=TM.on?(+TM.al||0):0;
  for(let i=0;i<12;i++,k++){const th=tmThr(k,p,rep);if(!isFinite(th))break;const at=now+(th-el);if(at<=now+5000)continue;
   ev.push(['BEGIN:VEVENT','UID:tm'+now+'-'+k+'@planner','DTSTAMP:'+z(now),'DTSTART:'+z(at),'DTEND:'+z(at+300000),'SUMMARY:'+icsT('⏰ پایان بازه‌ی '+fa(p[k%p.length])+' دقیقه‌ای - '+sub),'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsT('بازه‌ی مطالعه تمام شد'),'TRIGGER:PT0S','END:VALARM','END:VEVENT'].join('\r\n'))}
  if(!ev.length){tmMsg('بازه‌ی بعدی پیدا نشد؛ «تکرار چرخه‌ای» را روشن کن یا بازه‌ی جدید بنویس.');return}
  const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//planner//FA','CALSCALE:GREGORIAN'].concat(ev,'END:VCALENDAR').join('\r\n'),a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar;charset=utf-8'}));a.download='study-alarms.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
- tmMsg('📅 فایل '+fa(ev.length)+' آلارم ساخته شد. بازش کن و به تقویم گوشی اضافه کن؛ این آلارم‌ها حتی با بسته‌بودن مرورگر زنگ می‌خورند. اگر تایمر را مکث یا لغو کردی، آلارم‌های باقی‌مانده را از تقویم پاک کن.'+(TM.on&&!TM.run?' (چون تایمر مکث است، زمان‌ها از همین حالا حساب شدند.)':''))};
+ tmMsg('📅 فایل '+fa(ev.length)+' آلارم ساخته شد. فایل دانلودشده را باز کن و «افزودن به تقویم» را بزن؛ بعد حتی با قفل بودن گوشی یا بسته بودن مرورگر زنگ می‌خورد. اگر تایمر را مکث یا لغو کردی، آلارم‌های باقی‌مانده را از تقویم پاک کن.'+(TM.on&&!TM.run?' (چون تایمر مکث است، زمان‌ها از همین حالا حساب شدند.)':''))};
 
 /* ===== 4) Mistakes notebook ===== */
 function renderMist(){const el=$('mOut');if(!el)return;
