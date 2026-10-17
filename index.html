@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl"><head><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-wxTfb1Jk4sa+V+2NNbzz4I89wt39G4iKww900cZOYfc=' 'sha256-ncFyzoiG+5/XFPwh9a5O9a8hTs7XxPOhmjDKXtqDfYM=' 'sha256-xkj0WELq0vAcxZAOR75huP2OtUffJ/Vh1JRt4bHkM7s=' 'sha256-QyD5fc2dKrCgevtPOujtZ5RclZb4H1vHKB5U4kM73h8=' 'sha256-S4NSFas4KhunScFb15znGi5kkausbTE6dNc6LHt/rps=' 'sha256-NfOpJWtECNsJ8LDEaV3bV2qNIeqKw5g5Z66TsP285h0=' 'sha256-wtYKWCLRxX4pfJ88tDduAVLv+S1kdulf4mPBpnfRtwc=' 'sha256-KNLvLP7NOJHu68T5diZPGBeE15nB77u9RCQP4pzOIdQ=' 'sha256-947Fw33TvPujmdSHuZXcVpUo4KZLqZMyyedSXbGxAZQ=' 'sha256-Qm8qeV2iMXpxLNAQLJkklOCLkhcuQwQYIjbhH1ElSzY='; connect-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; font-src https://fonts.gstatic.com data:; style-src 'unsafe-inline' https://fonts.googleapis.com; child-src 'none'; script-src-attr 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-wxTfb1Jk4sa+V+2NNbzz4I89wt39G4iKww900cZOYfc=' 'sha256-ncFyzoiG+5/XFPwh9a5O9a8hTs7XxPOhmjDKXtqDfYM=' 'sha256-xkj0WELq0vAcxZAOR75huP2OtUffJ/Vh1JRt4bHkM7s=' 'sha256-QyD5fc2dKrCgevtPOujtZ5RclZb4H1vHKB5U4kM73h8=' 'sha256-S4NSFas4KhunScFb15znGi5kkausbTE6dNc6LHt/rps=' 'sha256-NfOpJWtECNsJ8LDEaV3bV2qNIeqKw5g5Z66TsP285h0=' 'sha256-wtYKWCLRxX4pfJ88tDduAVLv+S1kdulf4mPBpnfRtwc=' 'sha256-KNLvLP7NOJHu68T5diZPGBeE15nB77u9RCQP4pzOIdQ=' 'sha256-947Fw33TvPujmdSHuZXcVpUo4KZLqZMyyedSXbGxAZQ=' 'sha256-mAPM6JisnpoScJ59jr8nc6ezwYvCZwCNChmjsYcI1DU='; connect-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; font-src https://fonts.gstatic.com data:; style-src 'unsafe-inline' https://fonts.googleapis.com; child-src 'none'; script-src-attr 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="no-referrer">
 <meta name="format-detection" content="telephone=no">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -23,6 +23,18 @@ body.tmbOn .wrap{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
 .tmbar .tbs{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .tmbar .tbt{direction:ltr;font-size:15px}
 .tmbar button{padding:4px 10px;font-size:12px;border-radius:999px;white-space:nowrap}
+dialog.focusDlg{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;box-sizing:border-box;padding:calc(24px + env(safe-area-inset-top,0px)) 20px calc(24px + env(safe-area-inset-bottom,0px));background:linear-gradient(160deg,var(--n),var(--p));color:#fff;text-align:center;overflow:auto}
+dialog.focusDlg[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+dialog.focusDlg [hidden]{display:none!important}
+.focusDlg .fst{font-size:14px;font-weight:700;opacity:.8;letter-spacing:.5px}
+.focusDlg .fs{font-size:24px;font-weight:800;max-width:90%;word-break:break-word}
+.focusDlg .ft{direction:ltr;font-size:clamp(54px,19vw,130px);font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.focusDlg .fn{font-size:13px;opacity:.85;max-width:560px;line-height:1.9}
+.focusDlg .fm{font-size:15px;font-weight:700;max-width:520px;line-height:2;background:#ffffff22;border-radius:14px;padding:10px 16px}
+.focusDlg .fbs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
+.focusDlg .fbs button{font-size:16px;font-weight:700;padding:12px 24px;border-radius:999px;border:2px solid #fff;background:#ffffff1f;color:#fff;cursor:pointer;box-shadow:none!important}
+.focusDlg .fbs .fbp{background:#fff;color:var(--n)}
+.focusDlg .fau{font-size:12px;opacity:.85;margin-top:10px;display:flex;align-items:center;gap:6px}
 /* ===== accordion sections ===== */
 .accbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px}
 .accbar button{font-size:12.5px;padding:6px 12px}
@@ -392,5 +404,29 @@ tbt.textContent=T.textContent;var sv=g("tmS");tbs.textContent=(sv&&sv.value)||"�
 tbp.onclick=function(){var ps=g("tmPs"),go=g("tmGo");if(ps&&!ps.disabled)ps.click();else if(go&&!go.disabled)go.click();tick()};
 bar.querySelector(".tbg").onclick=function(){var d=card.closest("details.acc");if(d){d.open=true;save()}card.scrollIntoView({behavior:"smooth",block:"center"})};
 setInterval(tick,400);addEventListener("scroll",tick,{passive:true});addEventListener("resize",tick);tick()})();
+
+(function(){var d=document,K="planner-focus-auto";function g(i){return d.getElementById(i)}
+var auto=true;try{auto=localStorage.getItem(K)!=="0"}catch(e){}
+var dlg=d.createElement("dialog");dlg.className="focusDlg noprint";dlg.setAttribute("aria-label","حالت تمرکز");
+dlg.innerHTML='<div class="fst">در حال مطالعه</div><div class="fs"></div><div class="ft">۰۰:۰۰:۰۰</div><div class="fn"></div><div class="fm" hidden></div><div class="fbs"><button type="button" class="fbp"></button><button type="button" class="fbe">پایان و ثبت</button><button type="button" class="fbc">بازگشت به سایت</button></div><label class="fau"><input type="checkbox"> هنگام شروع تایمر، این صفحه خودکار باز شود</label>';
+d.body.appendChild(dlg);
+function q(s){return dlg.querySelector(s)}
+var st=q(".fst"),sj=q(".fs"),tm=q(".ft"),nx=q(".fn"),ms=q(".fm"),bp=q(".fbp"),be=q(".fbe"),bc=q(".fbc"),ck=q(".fau input"),fb=q(".fbs"),busy=false;
+ck.checked=auto;ck.onchange=function(){auto=ck.checked;try{localStorage.setItem(K,auto?"1":"0")}catch(e){}};
+function isOn(){var x=g("tmDn");return !!x&&!x.disabled}
+function isRun(){var x=g("tmPs");return !!x&&!x.disabled}
+function open(){if(!isOn()||dlg.open)return;try{dlg.showModal()}catch(e){dlg.setAttribute("open","")}sync()}
+function close(){try{dlg.close()}catch(e){dlg.removeAttribute("open")}}
+function sync(){var fo=g("tmFocus");if(fo)fo.style.display=isOn()?"":"none";var fb2=g("tmBar")&&g("tmBar").querySelector(".tbf");if(fb2)fb2.style.display=isOn()?"":"none";
+if(!dlg.open||busy)return;if(!isOn()){close();return}
+var T=g("tmT"),S=g("tmS"),N=g("tmNx"),r=isRun();tm.textContent=T?T.textContent:"";sj.textContent=(S&&S.value)||"تایمر مطالعه";nx.textContent=N?N.textContent.trim():"";st.textContent=r?"در حال مطالعه":"مکث شده";bp.textContent=r?"مکث":"ادامه"}
+bp.onclick=function(){var ps=g("tmPs"),go=g("tmGo");if(ps&&!ps.disabled)ps.click();else if(go&&!go.disabled)go.click();sync()};
+be.onclick=function(){var dn=g("tmDn");if(!dn||dn.disabled)return;dn.click();busy=true;var M=g("tmM");ms.textContent=M?M.textContent:"";ms.hidden=false;fb.style.display="none";st.textContent="پایان";setTimeout(function(){busy=false;ms.hidden=true;fb.style.display="";close()},3500)};
+bc.onclick=close;
+var go=g("tmGo");if(go)go.addEventListener("click",function(){setTimeout(function(){if(auto&&isOn()&&isRun())open()},80)});
+var tmb=card0();function card0(){var c=g("tmCard");return c&&c.querySelector(".tmb")}
+if(tmb){var fbtn=d.createElement("button");fbtn.type="button";fbtn.className="g";fbtn.id="tmFocus";fbtn.textContent="حالت تمرکز (تمام‌صفحه)";fbtn.style.display="none";fbtn.onclick=open;tmb.appendChild(fbtn)}
+var bar=g("tmBar");if(bar){var bb=d.createElement("button");bb.type="button";bb.className="g tbf";bb.textContent="تمرکز";bb.style.display="none";bb.onclick=open;bar.insertBefore(bb,bar.querySelector(".tbg"))}
+setInterval(sync,400);sync()})();
 })();</script>
 </body></html>
