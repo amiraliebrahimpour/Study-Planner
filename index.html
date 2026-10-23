@@ -1280,7 +1280,8 @@ function hhmm(m){m=Math.max(0,Math.round(m));var h=Math.floor(m/60)%24,mm=m%60;r
 function splitT(t){return String(t||"").split(/[\n،;,؛]+/).map(function(x){return x.trim()}).filter(Boolean)}
 function subIv(iv,a,b){var o=[];iv.forEach(function(x){if(b<=x[0]||a>=x[1]){o.push(x);return}if(a>x[0])o.push([x[0],a]);if(b<x[1])o.push([b,x[1]])});return o}
 function cAllow(c,days){var p=c.pat;if(p==="alt"){var ph=c.ph===1?1:0;return days.filter(function(_,i){return i%2===ph})}if(p==="cus"){var dd=Array.isArray(c.dd)?c.dd:[];return days.filter(function(d){return dd.indexOf(d)>-1})}return days.slice()}
-function schInner(c,i,s){var days=s.days.slice().sort(function(a,b){return a-b});
+function schInner(c,i,s){try{return schInner0(c,i,s)}catch(e){return '<div class="aqpv w">⚠️ خطا در بخش روزهای درس: '+esc(e.message)+'</div>'}}
+function schInner0(c,i,s){var days=s.days.slice().sort(function(a,b){return a-b});
 var P=[["","خودکار"],["all","هر روز"],["alt","روز در میون"],["cus","روزهای دلخواه"]];
 var h='<div class="aqq">روزهای مطالعه‌ی این درس 📆</div><div class="aqc">'+P.map(function(x){return '<button type="button" class="aqch'+((c.pat||"")===x[0]?" on":"")+'" data-pat="'+i+':'+x[0]+'">'+x[1]+'</button>'}).join("")+'</div>';
 if(c.pat==="alt"){h+='<div class="aqc" style="margin-top:6px">'+[0,1].map(function(p){return '<button type="button" class="aqch'+((c.ph===1?1:0)===p?" on":"")+'" data-ph="'+i+':'+p+'">'+(p?"شروع از روز دوم":"شروع از روز اول")+'</button>'}).join("")+'</div>'}
@@ -1388,8 +1389,8 @@ if(t.id==="aqRegen"){var lb=document.getElementById("aqLocal");if(lb)lb.click();
 if(t.id==="aqPng"){png(t);return}
 if(t.id==="aqPrint"){png(t,true);return}
 });
-try{var _b=build;build=function(){_b.apply(this,arguments);try{var bx=document.getElementById("aiqBox");if(!bx||!bx.contains(document.activeElement))render()}catch(x){}}}catch(x){}
-render();
+try{var _b=build;build=function(){_b.apply(this,arguments);try{var bx=document.getElementById("aiqBox");if(!bx||!bx.contains(document.activeElement))render()}catch(x){var bz=document.getElementById("aiqBox");if(bz)bz.innerHTML='<div class="aqwarn">⚠️ خطا در مشاور برنامه‌ریز: '+esc(x.message)+'</div>'}}}catch(x){}
+try{render()}catch(x){var bz0=document.getElementById("aiqBox");if(bz0)bz0.innerHTML='<div class="aqwarn">⚠️ خطا در مشاور برنامه‌ریز: '+esc(x.message)+'</div>'}
 })();
 </script>
 </body></html>
