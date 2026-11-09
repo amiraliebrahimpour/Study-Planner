@@ -899,7 +899,7 @@ const SECS=[
  {id:'acc-review',i:'🔁',t:'مرور و دفترچه‌ی اشتباهات',d:'مرور فاصله‌دار سرفصل‌ها و ثبت اشتباهات'},
  {id:'rmNotif',i:'🔔',t:'یادآوری مطالعه',d:'اعلان وقتی چند روز درس نخوانده‌ای'}
 ];
-const SIMPLE=['acc-timer','acc-goal','acc-report'];
+const SIMPLE=['acc-timer','acc-goal','acc-ai','acc-report'];const ALWAYS=['acc-ai'];
 const $2=id=>document.getElementById(id);
 const daysEl=$2('acc-days'),setEl=$2('acc-settings');
 if(!daysEl||!setEl)return;
@@ -914,7 +914,7 @@ const bar=document.querySelector('.accbar');
 if(bar){const b=document.createElement('button');b.type='button';b.className='g';b.id='secBtn';b.textContent='🧩 انتخاب بخش‌ها';bar.appendChild(b);b.onclick=()=>openChooser(false)}
 let sig='';
 function apply(){
- const cur=S.settings&&S.settings.secs,has=Array.isArray(cur),on=new Set(has?cur:SECS.map(x=>x.id));
+ const cur=S.settings&&S.settings.secs,has=Array.isArray(cur),on=new Set(has?cur:SECS.map(x=>x.id));ALWAYS.forEach(i=>on.add(i));
  const s2=has?cur.join(','):'*';if(s2===sig)return;sig=s2;
  let hidden=0;
  SECS.forEach(x=>{const el=$2(x.id);if(!el)return;
@@ -930,7 +930,7 @@ function pins(){
  SECS.forEach(x=>{const el=$2(x.id);if(!el)return;const sm=el.querySelector(':scope>summary');if(!sm)return;
   let p=sm.querySelector('.secPin');
   const bd=el.querySelector(':scope>.accb');
-  if(!more.contains(el)){p&&p.remove();if(bd){bd.inert=false;bd.classList.remove('secOff');const n=bd.querySelector(':scope>.secLock');n&&n.remove()}return}
+  if(ALWAYS.indexOf(x.id)>-1||!more.contains(el)){p&&p.remove();if(bd){bd.inert=false;bd.classList.remove('secOff');const n=bd.querySelector(':scope>.secLock');n&&n.remove()}return}
   if(bd){bd.inert=true;bd.classList.add('secOff');if(!bd.querySelector(':scope>.secLock')){const n=document.createElement('div');n.className='secLock';n.textContent='🔒 این بخش هنوز فعال نیست و چیزی ثبت نمی‌کنه. برای فعال‌شدن، تیکِ «به صفحه‌ی اصلی» رو بالا بزن.';bd.insertBefore(n,bd.firstChild)}}
   if(p)return;
   p=document.createElement('label');p.className='secPin';p.title='افزودن به بخش‌های اصلی';
@@ -958,12 +958,12 @@ function openChooser(first){
  document.body.appendChild(ov);document.body.style.overflow='hidden';
  const cbs=[...ov.querySelectorAll('input[type=checkbox]')];
  const mark=()=>cbs.forEach(c=>c.parentNode.classList.toggle('on',c.checked));
- const setv=a=>{cbs.forEach(c=>c.checked=a.indexOf(c.value)>-1);mark()};
+ const setv=a=>{cbs.forEach(c=>{c.checked=a.indexOf(c.value)>-1||ALWAYS.indexOf(c.value)>-1;if(ALWAYS.indexOf(c.value)>-1)c.disabled=true});mark()};
  setv(start);
  ov.addEventListener('change',mark);
  const close=()=>{ov.remove();document.body.style.overflow='';document.removeEventListener('keydown',esc)};
  const esc=e=>{if(e.key==='Escape'&&!first)close()};document.addEventListener('keydown',esc);
- const commit=a=>{S.settings.secs=a;save();apply();try{pins()}catch(_){}close()};
+ const commit=a=>{ALWAYS.forEach(i=>{if(a.indexOf(i)<0)a.push(i)});S.settings.secs=a;save();apply();try{pins()}catch(_){}close()};
  ov.querySelector('.secQ').onclick=e=>{const q=e.target.dataset&&e.target.dataset.q;if(!q)return;setv(q==='s'?SIMPLE:q==='a'?SECS.map(x=>x.id):[])};
  $2('secOk').onclick=()=>commit(cbs.filter(c=>c.checked).map(c=>c.value));
  if(first)$2('secAll').onclick=()=>commit(SECS.map(x=>x.id));else{$2('secX').onclick=close;ov.addEventListener('click',e=>{if(e.target===ov)close()})}
